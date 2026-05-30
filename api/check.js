@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
     const user = req.query.user;
-    
-    // Your live Wispbyte Node.js server
     const WISPBYTE_IP_URL = "http://93.115.101.158:12582/";
 
     if (!user) {
@@ -9,19 +7,23 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Vercel's server securely asks your HTTP Wispbyte server in the background
-        const response = await fetch(`${WISPBYTE_IP_URL}?action=check&user=${encodeURIComponent(user)}`);
+        // We added &t=... to the end so Vercel is forced to make a fresh request to Wispbyte every time
+        const response = await fetch(`${WISPBYTE_IP_URL}?action=check&user=${encodeURIComponent(user)}&t=${Date.now()}`, {
+            cache: 'no-store', // Forces Vercel not to cache
+            headers: { 'Cache-Control': 'no-cache' }
+        });
         
-        if (!response.ok) {
-             throw new Error(`Wispbyte server responded with status: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`Wispbyte error: ${response.status}`);
         const data = await response.json();
         
-        // Send the JSON result back to your secure frontend
+        // Tells the user's web browser NOT to cache this response
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+
         return res.status(200).json(data);
     } catch (error) {
         console.error("Proxy Error:", error);
-        return res.status(500).json({ error: 'Failed to contact Wispbyte server' });
+        return res.status(500).json({ error: 'Failed to contact Wispbyte' });
     }
 }
