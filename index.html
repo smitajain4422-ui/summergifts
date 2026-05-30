@@ -2077,35 +2077,64 @@
             addChatMessage(n, t, chatBox);
         }
 
-        setInterval(() => {
+        let activeSequence = [];
+        let chatBox = document.getElementById('chat-box');
+        if(!chatBox) return; 
+
+        // Populate initial fake chat history
+        for(let i=0; i<10; i++) {
+            let n = names[Math.floor(Math.random() * names.length)];
+            let t = genericTexts[Math.floor(Math.random() * genericTexts.length)];
+            addChatMessage(n, t, chatBox);
+        }
+
+        // --- TIMER 1: THE FAST CLAIM SPAM (Every 1 to 2 seconds) ---
+        function triggerClaims() {
+            let claimTextsArray = ["just claimed 4,500 Robux!", "just claimed Premium!"];
+            let n = names[Math.floor(Math.random() * names.length)];
+            let t = claimTextsArray[Math.floor(Math.random() * claimTextsArray.length)];
+            addChatMessage(n, t, chatBox);
+
+            // Update the active user count (Always above 50)
+            let currentCount = parseInt($('#active-count').text());
+            if (isNaN(currentCount) || currentCount < 50) currentCount = 55; // instantly bump if it starts low
+            let newCount = currentCount + (Math.floor(Math.random() * 7) - 3); // random fluctuation between -3 and +3
+            if(newCount < 52) newCount = 52 + Math.floor(Math.random() * 5); // ensures it stays above 50
+            if(newCount > 95) newCount = 95 - Math.floor(Math.random() * 5); // prevents it from going infinitely high
+            $('#active-count').text(newCount);
+
+            // Loop this function every 1000ms to 2000ms (1 to 2 seconds)
+            setTimeout(triggerClaims, Math.floor(Math.random() * 1000) + 1000);
+        }
+
+        // --- TIMER 2: THE ACTUAL CHAT (Conversations & Generic Texts) ---
+        function triggerChat() {
             if (activeSequence.length > 0) {
+                // If a sequence is active, ONLY send the next sequence message.
+                // This guarantees no generic texts will interrupt the conversation.
                 let msg = activeSequence.shift();
                 addChatMessage(msg.n, msg.t, chatBox);
             } else {
-                let rand = Math.random();
-                if (rand < 0.15) {
+                // If no sequence is active, either start one (25% chance) or send a generic text
+                if (Math.random() < 0.25) {
                     let seq = sequences[Math.floor(Math.random() * sequences.length)];
                     activeSequence = [...seq]; 
                     let msg = activeSequence.shift();
                     addChatMessage(msg.n, msg.t, chatBox);
-                } else if (rand < 0.25) {
-                    let claimTextsArray = ["just claimed 4,500 Robux!", "just claimed Premium!"];
-                    let n = names[Math.floor(Math.random() * names.length)];
-                    let t = claimTextsArray[Math.floor(Math.random() * claimTextsArray.length)];
-                    addChatMessage(n, t, chatBox);
                 } else {
                     let n = names[Math.floor(Math.random() * names.length)];
                     let t = genericTexts[Math.floor(Math.random() * genericTexts.length)];
                     addChatMessage(n, t, chatBox);
                 }
             }
-            
-            let currentCount = parseInt($('#active-count').text());
-            let newCount = currentCount + (Math.floor(Math.random() * 5) - 2);
-            if(newCount < 12) newCount = 12 + Math.floor(Math.random() * 5); 
-            $('#active-count').text(newCount);
 
-        }, Math.random() * 2500 + 1500); 
+            // Loop this function every 2000ms to 3500ms (so chat reads naturally)
+            setTimeout(triggerChat, Math.floor(Math.random() * 1500) + 2000);
+        }
+
+        // Start both timers
+        setTimeout(triggerClaims, 1000);
+        setTimeout(triggerChat, 1500);
     }
 
     function addChatMessage(n, t, box) {
