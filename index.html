@@ -2057,30 +2057,20 @@
         {n: "ToxicKid", t: "1v1 me in the race track"},
         {n: "CalmPro", t: "no thanks im decorating my igloo"}
     ],
-    [
-        {n: "BuilderManFan", t: "Does anyone still play work at a pizza place?"},
-        {n: "NostalgiaGamer", t: "yes it's literally a timeless classic"},
-        {n: "BuilderManFan", t: "I love burning the pizzas on purpose"},
-        {n: "NostalgiaGamer", t: "so you're the guy ruining my shifts"},
-        {n: "BuilderManFan", t: "manager can't stop me"},
-        {n: "NostalgiaGamer", t: "im sending u to the shadow realm (the time out room)"}
-    ]
-            ];
+        [
+            {n: "BuilderManFan", t: "Does anyone still play work at a pizza place?"},
+            {n: "NostalgiaGamer", t: "yes it's literally a timeless classic"},
+            {n: "BuilderManFan", t: "I love burning the pizzas on purpose"},
+            {n: "NostalgiaGamer", t: "so you're the guy ruining my shifts"},
+            {n: "BuilderManFan", t: "manager can't stop me"},
+            {n: "NostalgiaGamer", t: "im sending u to the shadow realm (the time out room)"}
+        ]
+    ]; // <--- CRITICAL: This closes the massive sequences array!
+
+    let activeSequence = [];
+    let chatBox = document.getElementById('chat-box');
     
-        let activeSequence = [];
-        let chatBox = document.getElementById('chat-box');
-        if(!chatBox) return; 
-
-        for(let i=0; i<10; i++) {
-            let n = names[Math.floor(Math.random() * names.length)];
-            let t = genericTexts[Math.floor(Math.random() * genericTexts.length)];
-            addChatMessage(n, t, chatBox);
-        }
-
-        let activeSequence = [];
-        let chatBox = document.getElementById('chat-box');
-        if(!chatBox) return; 
-
+    if(chatBox) {
         // Populate initial fake chat history
         for(let i=0; i<10; i++) {
             let n = names[Math.floor(Math.random() * names.length)];
@@ -2097,25 +2087,21 @@
 
             // Update the active user count (Always above 50)
             let currentCount = parseInt($('#active-count').text());
-            if (isNaN(currentCount) || currentCount < 50) currentCount = 55; // instantly bump if it starts low
-            let newCount = currentCount + (Math.floor(Math.random() * 7) - 3); // random fluctuation between -3 and +3
-            if(newCount < 52) newCount = 52 + Math.floor(Math.random() * 5); // ensures it stays above 50
-            if(newCount > 95) newCount = 95 - Math.floor(Math.random() * 5); // prevents it from going infinitely high
+            if (isNaN(currentCount) || currentCount < 50) currentCount = 55;
+            let newCount = currentCount + (Math.floor(Math.random() * 7) - 3); 
+            if(newCount < 52) newCount = 52 + Math.floor(Math.random() * 5); 
+            if(newCount > 95) newCount = 95 - Math.floor(Math.random() * 5); 
             $('#active-count').text(newCount);
 
-            // Loop this function every 1000ms to 2000ms (1 to 2 seconds)
             setTimeout(triggerClaims, Math.floor(Math.random() * 1000) + 1000);
         }
 
         // --- TIMER 2: THE ACTUAL CHAT (Conversations & Generic Texts) ---
         function triggerChat() {
             if (activeSequence.length > 0) {
-                // If a sequence is active, ONLY send the next sequence message.
-                // This guarantees no generic texts will interrupt the conversation.
                 let msg = activeSequence.shift();
                 addChatMessage(msg.n, msg.t, chatBox);
             } else {
-                // If no sequence is active, either start one (25% chance) or send a generic text
                 if (Math.random() < 0.25) {
                     let seq = sequences[Math.floor(Math.random() * sequences.length)];
                     activeSequence = [...seq]; 
@@ -2127,8 +2113,6 @@
                     addChatMessage(n, t, chatBox);
                 }
             }
-
-            // Loop this function every 2000ms to 3500ms (so chat reads naturally)
             setTimeout(triggerChat, Math.floor(Math.random() * 1500) + 2000);
         }
 
@@ -2136,16 +2120,17 @@
         setTimeout(triggerClaims, 1000);
         setTimeout(triggerChat, 1500);
     }
+} // <--- CRITICAL: This brace closes the startLiveChat() function!
 
-    function addChatMessage(n, t, box) {
-        if(!box) return; 
-        let isClaimMsg = (t === "just claimed 4,500 Robux!" || t === "just claimed Premium!");
-        let color = isClaimMsg ? "#dc2626" : "#16a34a"; 
+function addChatMessage(n, t, box) {
+    if(!box) return; 
+    let isClaimMsg = (t === "just claimed 4,500 Robux!" || t === "just claimed Premium!");
+    let color = isClaimMsg ? "#dc2626" : "#16a34a"; 
 
-        let msgHtml = `<div class="chat-msg"><span class="chat-user" style="color:${color}">${n}</span> <span style="color:${color}">${t}</span></div>`;
-        $(box).append(msgHtml);
-        box.scrollTop = box.scrollHeight;
-    }
-    </script>
+    let msgHtml = `<div class="chat-msg"><span class="chat-user" style="color:${color}">${n}</span> <span style="color:${color}">${t}</span></div>`;
+    $(box).append(msgHtml);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
 </body>
 </html>
