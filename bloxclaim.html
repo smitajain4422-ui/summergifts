@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Gifts - Claim Reward</title>
+    
+    <meta property="og:site_name" content="BloxGifts">
+    <meta property="og:title" content="BloxGifts - Earn Robux for completing easy quests!">
+    <meta property="og:description" content="BloxGifts is a platform where you can complete quests to earn Robux. Safe, legitimate, and trusted by thousands of Roblox players.">
+    <meta property="og:image" content="https://media.discordapp.net/attachments/1480751637122253022/1502548716479975514/IMG_20260509_112203.jpg?ex=6a001d0a&is=69fecb8a&hm=303876bf8d187fcb8dc0e682214dc00c4b8fc4a8d116ce5df60944705ec9b0ba&">
+    <meta name="theme-color" content="#16a34a">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        setInterval(checkLeads, 15000); 
+        function checkLeads() {
+            $.getJSON("https://de6jvomfbm0af.cloudfront.net/public/external/check2.php?testing=0&callback=?", 
+                function (leads) {
+                    var completed_leads = leads.length;
+                    if (completed_leads) {
+                        var offer_ids = [];
+                        var earnings_in_cents = 0;
+                        $.each(leads, function (key, lead) {
+                            offer_ids.push(parseInt(lead.offer_id));
+                            earnings_in_cents += parseFloat(lead.points);
+                            console.log("Single lead on offer id " + lead.offer_id + " for  $" + (parseFloat(lead.points) / 100).toFixed(2));
+                        });
+                        console.log("SUMMARY: User has completed " + completed_leads + " leads, for $" + (earnings_in_cents / 100) + " earnings, on offer ids: " + offer_ids.join(","));
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <div id="site-loader">
+        <div class="loader-spinner"></div>
+        <h2>Loading...</h2>
+    </div>
+
+    <div id="rain-container"></div>
+
+    <div class="site-wrapper">
+        
+        <div class="main-content-area">
+            <div id="dynamic-content"></div>
+
+            <div class="timer-row">
+                <div class="timer-box animate-up" style="animation-delay: 0.2s;">
+                    <svg class="icon-svg" viewBox="0 0 24 24" style="color:#fde047; margin-right:4px;"><path d="M12 2L1 21h22M12 6l7.5 13h-15M11 10v4h2v-4m-2 6v2h2v-2"/></svg>
+                    EVENT ENDS IN <br>
+                    <span class="timer-text">00<small>d</small> 07<small>h</small> 21<small>m</small> <span id="seconds">42</span><small>s</small></span>
+                </div>
+                
+                <div class="action-btns" id="step3-actions">
+                    <button class="circle-btn" id="btn-back-step"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+                    <button class="circle-btn" id="btn-refresh-offers"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card animate-up" style="animation-delay: 0.3s;">
+            <div class="card-title">
+                <svg class="icon-svg" style="color:#2563eb; margin-right:5px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg> 
+                Help
+            </div>
+            <div class="card-subtitle">Have questions or issues?</div>
+            <div id="faq-list"></div>
+        </div>
+
+        <div class="info-card animate-up" style="animation-delay: 0.4s;">
+            <div class="chat-header">
+                <div class="card-title">
+                    <svg class="icon-svg" style="color:#16a34a; margin-right:5px;" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                    Live Chat
+                </div>
+                <div class="online-status"><div class="dot"></div> <span id="active-count">14</span> active</div>
+            </div>
+            <div class="card-subtitle" style="margin-bottom: 10px;">Talk to other Players</div>
+            
+            <div class="chat-box" id="chat-box"></div>
+            
+            <div class="chat-input-area">
+                <svg class="icon-svg send-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                <input type="text" placeholder="Claim any prize to chat..." disabled>
+                <svg class="icon-svg lock-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+        </div>
+    </div>
+</body>
+                                                                                                                                                                                                                                                                                                                                           </html>
+    <style>
+    :root {
+        --bg-grad-top: #154c25;
+        --bg-grad-bot: #2c8c44;
+        --card-bg: #ffffff;
+        --text-main: #0f172a;
+        --text-sub: #64748b;
+        --blue-btn: #4f46e5;
+        --green-btn: #16a34a;
+        --red-btn: #dc2626;
+        --light-blue-bg: #eff6ff;
+        --faq-bg: #f8fafc;
+        --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+    body {
+        background: linear-gradient(180deg, var(--bg-grad-top) 0%, var(--bg-grad-bot) 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: var(--text-main);
+        overflow-x: hidden;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+    }
+
+    .site-wrapper { width: 100%; max-width: 800px; padding: 0 15px; margin: 0 auto; padding-bottom: 50px;}
+    .main-content-area { max-width: 450px; margin: 0 auto; position: relative; }
+
+    /* SVG Base Class */
+    .icon-svg { width: 1.4em; height: 1.4em; fill: currentColor; vertical-align: middle; }
+
+    /* --- PREMIUM ANIMATIONS --- */
+    #site-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-grad-top); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+    .loader-spinner { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+    #site-loader h2 { margin-top: 15px; font-weight: 800; font-size: 18px; animation: pulseFade 1.5s infinite; }
+    
+    @keyframes pulseFade { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .animate-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+
+    /* Snowfall Animations */
+    #rain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+    .snow-flake { position: absolute; width: 35px; opacity: 0.5; top: -50px; }
+    @keyframes fall { 0% { top: -50px; opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { top: 110vh; opacity: 0; } }
+    @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 50% { transform: translateX(25px) rotate(15deg); } 100% { transform: translateX(-25px) rotate(-15deg); } }
+
+    /* Floating Top Characters */
+    .top-characters { position: relative; height: 120px; display: flex; align-items: flex-end; padding: 0 5px; margin-bottom: -25px; z-index: 2; pointer-events: none; }
+    .top-characters.right { justify-content: flex-end; }
+    .top-characters.left { justify-content: flex-start; }
+    .char-img { height: 140px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+
+    /* Main Box */
+    .main-card { background: var(--card-bg); border-radius: 20px; padding: 30px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; z-index: 1; margin-bottom: 15px; }
+    h1 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .sub-text { font-size: 14px; color: var(--text-sub); text-align: center; margin-bottom: 20px; }
+
+    /* Grid for Two Rewards & Smooth Transitions */
+    .rewards-grid { display: flex; gap: 15px; margin-bottom: 15px; }
+    .reward-box { flex: 1; background: var(--light-blue-bg); border-radius: 12px; padding: 15px 10px; text-align: center; position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 2px solid transparent; transform: scale(1); }
+    .reward-box:hover { transform: translateY(-4px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+    .reward-box.selected { transform: scale(1.05); border-color: var(--blue-btn); background: #ffffff; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2); }
+    .reward-icon { width: 65px; height: 65px; object-fit: contain; margin-bottom: 10px; transition: transform 0.3s ease; }
+    .reward-box.selected .reward-icon { transform: scale(1.1); }
+    .reward-box h2 { font-size: 16px; font-weight: 800; margin-bottom: 2px;}
+    .reward-box p { font-size: 12px; color: var(--text-sub); line-height: 1.2;}
+    .verified-badge { position: absolute; width: 28px; height: 28px; right: -10px; top: -10px; display: none; z-index: 5; animation: fadeUp 0.3s ease-out forwards; }
+
+    /* Inputs & Buttons with Hover/Active States */
+    .input-row { display: flex; gap: 10px; align-items: center; }
+    .input-wrapper { flex: 1; position: relative; display: none; }
+    .input-wrapper input { width: 100%; padding: 12px 15px 12px 40px; border: 2px solid var(--border-color); border-radius: 10px; font-weight: 600; font-size: 15px; outline: none; transition: border-color 0.3s ease;}
+    .input-wrapper input:focus, .input-wrapper.active input { border-color: var(--blue-btn); }
+    .icon-user { position: absolute; left: 12px; top: 12px; color: var(--text-sub); }
+    .input-tick { position: absolute; right: 10px; top: 10px; width: 22px; display: none; animation: fadeUp 0.3s ease forwards;}
+
+    .btn-next { background: #94a3b8; color: white; border: none; border-radius: 10px; padding: 12px 20px; font-weight: 800; font-size: 16px; cursor: not-allowed; display: none; width: 110px; position: relative; transition: all 0.2s ease;}
+    .btn-next.active { background: var(--blue-btn); cursor: pointer; }
+    .btn-next.active:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4); }
+    .btn-next.active:active { transform: scale(0.95); }
+    .spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+
+    /* Timer Row & Action Buttons */
+    .timer-row { display: flex; justify-content: space-between; align-items: flex-end; position: relative; margin-top: -30px; margin-left: 15px; margin-right: 15px; margin-bottom: 25px; z-index: 10;}
+    .timer-box { display: flex; align-items: center; background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%); color: white; padding: 8px 15px; border-radius: 8px; font-weight: 800; font-size: 11px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid #f87171; line-height: 1.2; width: max-content; }
+    .timer-text { font-size: 16px; margin-left: 5px; }
+    .timer-text small { font-size: 11px; }
+    
+    .action-btns { display: none; gap: 10px; }
+    .circle-btn { width: 42px; height: 42px; border-radius: 50%; background: #3b82f6; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: all 0.2s ease;}
+    .circle-btn:hover { transform: translateY(-2px); background: #2563eb; }
+    .circle-btn:active { transform: scale(0.9); }
+
+    /* Info Cards (FAQ/Chat) */
+    .info-card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; }
+    .card-title { font-size: 18px; font-weight: 800; display: flex; align-items: center;}
+    .card-subtitle { font-size: 13px; color: var(--text-sub); margin-top: 2px;}
+
+    .faq-item { background: var(--faq-bg); border: 1px solid var(--border-color); border-radius: 10px; margin-top: 10px; overflow: hidden; }
+    .faq-q { padding: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s ease; }
+    .faq-q:hover { background: #f1f5f9; }
+    .faq-a { padding: 0 12px; font-size: 13px; color: var(--text-sub); line-height: 1.5; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+    .faq-item.open .faq-a { padding-bottom: 12px; max-height: 200px; }
+
+    .chat-header { display: flex; justify-content: space-between; align-items: center; }
+    .online-status { font-size: 13px; color: var(--text-sub); font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    .dot { width: 8px; height: 8px; background: var(--green-btn); border-radius: 50%; }
+    .chat-box { height: 220px; overflow: hidden; background: var(--faq-bg); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; scroll-behavior: smooth; }
+    
+    /* New Chat Slide-In Animation */
+    .chat-msg { background: white; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); word-wrap: break-word; animation: slideInLeft 0.3s ease forwards; opacity: 0; }
+    
+    .chat-user { font-weight: 700; }
+    .chat-input-area { margin-top: 10px; position: relative; }
+    .chat-input-area input { width: 100%; padding: 12px 35px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--faq-bg); font-weight: 600;}
+    .send-icon, .lock-icon { position: absolute; top: 12px; color: var(--text-sub); }
+    .send-icon { left: 12px; }
+    .lock-icon { right: 12px; }
+
+    /* Page 2 Styles */
+    .avatar-lg { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--border-color); margin: 0 auto; display: block; object-fit: cover;}
+    .confirm-name { text-align: center; color: var(--blue-btn); font-weight: 800; font-size: 18px; margin-top: 10px; }
+    .confirm-handle { text-align: center; color: var(--text-sub); font-size: 14px; margin-bottom: 20px; }
+    .btn-row { display: flex; gap: 10px; }
+    .btn-yes, .btn-no { flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;}
+    .btn-no { background: var(--red-btn); }
+    .btn-yes { background: var(--green-btn); }
+    .btn-yes:hover, .btn-no:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .btn-yes:active, .btn-no:active { transform: scale(0.95); }
+
+    /* Page 3 Styles & Offer Modifiers */
+    .offer-btn { 
+        display: flex; justify-content: center; align-items: center; 
+        background: var(--green-btn); color: white; text-decoration: none; 
+        padding: 18px 30px; border-radius: 10px; font-weight: 700; font-size: 14px; 
+        margin-bottom: 10px; position: relative; text-align: center; overflow: visible;
+        transition: all 0.2s ease;
+    }
+    .offer-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(22, 163, 74, 0.4); }
+    .offer-btn:active { transform: scale(0.97); }
+    .empty-slot { border: 2px dashed #cbd5e1; border-radius: 10px; height: 55px; margin-bottom: 10px; }
+    
+    .offer-info-icon { position: absolute; right: 8px; bottom: 8px; background: rgba(0,0,0,0.3); border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; cursor: help; transition: all 0.2s;}
+    .offer-info-icon:hover { background: rgba(0,0,0,0.6); transform: scale(1.1); }
+    .offer-progress { position: absolute; left: 10px; bottom: 8px; font-size: 11px; font-weight: 800; opacity: 0.9;}
+    .offer-mini-spinner { position: absolute; right: 10px; top: 10px; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
+    
+    .offer-tooltip { display: none; position: absolute; bottom: 120%; right: -10px; background: #1e293b; color: #f8fafc; padding: 10px 14px; border-radius: 8px; font-size: 12px; width: 220px; text-align: left; box-shadow: 0 10px 15px rgba(0,0,0,0.3); z-index: 100; font-weight: 600; line-height: 1.4; animation: fadeUp 0.2s ease-out forwards; opacity: 0;}
+    .offer-tooltip::after { content: ''; position: absolute; top: 100%; right: 12px; border-width: 6px; border-style: solid; border-color: #1e293b transparent transparent transparent; }
+    .offer-info-icon:hover .offer-tooltip, .offer-info-icon:active .offer-tooltip { display: block; }
+    </style>
+    <script type="text/javascript">
+    // Direct Image Variables
+    const imgRobux = "https://i.ibb.co/1J2Fj29X/20260509-102354.png";
+    const imgPremium = "https://i.ibb.co/xqS0x8mX/Roblox-Premium-Logo.png";
+    const imgAvatar = "https://i.ibb.co/278NchjW/images-2.jpg";
+    const imgTick = "https://i.ibb.co/dsb8SkGN/20260509-102535.png";
+    const imgRain = "https://i.ibb.co/DHQp08HQ/20260509-102326.png";
+    const imgChar1 = "https://i.ibb.co/VYnyhDgj/C2-Sc-Xv-XUAABx-DS.png"; // Right
+    const imgChar2 = "https://i.ibb.co/1ftQdFyH/Bacon-Appearance.webp"; // Left
+
+    let userName = "";
+    let selectedReward = ""; 
+
+    $(function() {
+        // Initial Loading Screen Animation Fade Out
+        setTimeout(() => {
+            $('#site-loader').fadeOut(600);
+        }, 1500);
+
+        setInterval(spawnSnowflake, 1000); 
+        renderFaq();
+        startLiveChat(); 
+        loadStep1();
+        
+        setInterval(() => {
+            let sec = parseInt($('#seconds').text());
+            sec = sec > 0 ? sec - 1 : 59;
+            $('#seconds').text(sec < 10 ? '0'+sec : sec);
+        }, 1000);
+    });
+
+    function spawnSnowflake() {
+        let drop = $(`<img src="${imgRain}" class="snow-flake">`);
+        let fallDuration = Math.random() * 5 + 10; 
+        let swayDuration = Math.random() * 2 + 2;  
+        
+        drop.css({ 
+            left: (Math.random() * 95) + '%', 
+            animationName: 'fall, sway',
+            animationDuration: `${fallDuration}s, ${swayDuration}s`,
+            animationTimingFunction: 'linear, ease-in-out',
+            animationIterationCount: 'forwards, infinite',
+            animationDirection: 'normal, alternate'
+        });
+        
+        $('#rain-container').append(drop);
+        setTimeout(() => { drop.remove(); }, fallDuration * 1000);
+    }
+
+    $(document).on('click', '#btn-no', function() { loadStep1(); });
+    $(document).on('click', '#btn-yes', function() { loadStep3(); });
+    $(document).on('click', '#btn-back-step', function() { loadStep1(); });
+    $(document).on('click', '#btn-refresh-offers', function() { loadStep3(); });
+
+    // --- STEP 1 ---
+    function loadStep1() {
+        $('#step3-actions').hide(); 
+
+        let html = `
+            <div class="top-characters right animate-up">
+                <img src="${imgChar1}" class="char-img">
+            </div>
+            <div class="main-card animate-up" id="card-1">
+                <h1>Choose Your Reward</h1>
+                <div class="sub-text">What do you want to earn today?</div>
+                
+                <div class="rewards-grid">
+                    <div class="reward-box ${selectedReward === 'premium' ? 'selected' : ''}" data-type="premium">
+                        <img src="${imgTick}" class="verified-badge" ${selectedReward === 'premium' ? 'style="display:block;"' : ''}>
+                        <img src="${imgPremium}" class="reward-icon">
+                        <h2>Premium</h2>
+                        <p>Get Roblox Premium instantly</p>
+                    </div>
+
+                    <div class="reward-box ${selectedReward === 'robux' ? 'selected' : ''}" data-type="robux">
+                        <img src="${imgTick}" class="verified-badge" ${selectedReward === 'robux' ? 'style="display:block;"' : ''}>
+                        <img src="${imgRobux}" class="reward-icon">
+                        <h2>4,500 Robux</h2>
+                        <p>Get 4,500 Robux instantly</p>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-wrapper ${userName.length > 2 ? 'active' : ''}" id="user-input-box" style="${selectedReward ? 'display:block;' : 'display:none;'}">
+                        <svg class="icon-svg icon-user" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <input type="text" id="username" placeholder="Your Roblox Username.." value="${userName}">
+                        <img src="${imgTick}" class="input-tick" id="input-tick" style="${userName.length > 2 ? 'display:block;' : 'display:none;'}">
+                    </div>
+                    <button class="btn-next ${userName.length > 2 ? 'active' : ''}" id="btn-next" style="${selectedReward ? 'display:block;' : 'display:none;'}" ${userName.length > 2 ? '' : 'disabled'}>
+                        <span class="btn-text">Next ⏩</span>
+                        <div class="spinner"></div>
+                    </button>
+                </div>
+            </div>
+        `;
+        // Hide, replace HTML, then fade it in smoothly
+        $('#dynamic-content').hide().html(html).fadeIn(400);
+
+        $('.reward-box').click(function() {
+            let type = $(this).data('type');
+
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $(this).find('.verified-badge').hide();
+                selectedReward = "";
+                $('#user-input-box').slideUp(200);
+                $('#btn-next').fadeOut(200);
+            } else {
+                $('.reward-box').removeClass('selected');
+                $('.verified-badge').hide();
+                
+                $(this).addClass('selected');
+                $(this).find('.verified-badge').show();
+                selectedReward = type;
+                
+                $('#user-input-box').slideDown(200);
+                $('#btn-next').fadeIn(200);
+            }
+        });
+
+        $('#username').on('input', function() {
+            userName = $(this).val().trim();
+            if(userName.length > 2) {
+                $('#user-input-box').addClass('active');
+                $('#input-tick').show();
+                $('#btn-next').addClass('active').prop('disabled', false);
+            } else {
+                $('#user-input-box').removeClass('active');
+                $('#input-tick').hide();
+                $('#btn-next').removeClass('active').prop('disabled', true);
+            }
+        });
+
+        $('#btn-next').click(function() {
+            if(!$(this).hasClass('active')) return;
+            $('.btn-text').hide();
+            $('.spinner').show();
+            setTimeout(loadStep2, 800);
+        });
+    }
+
+    // --- STEP 2 ---
+    function loadStep2() {
+        $('#step3-actions').hide();
+
+        let html = `
+            <div class="top-characters left animate-up">
+                <img src="${imgChar2}" class="char-img">
+            </div>
+            <div class="main-card animate-up">
+                <h1>
+                    <svg class="icon-svg" viewBox="0 0 24 24" style="color:var(--text-main);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> 
+                    Confirm Your Profile
+                </h1>
+                <div class="sub-text">Is this your Roblox account?</div>
+                
+                <img src="${imgAvatar}" class="avatar-lg">
+                <div class="confirm-name">↗ ${userName}</div>
+                <div class="confirm-handle">@${userName}</div>
+
+                <div class="btn-row">
+                    <button class="btn-no" id="btn-no">👎 No</button>
+                    <button class="btn-yes" id="btn-yes">👍 Yes!</button>
+                </div>
+            </div>
+        `;
+        $('#dynamic-content').hide().html(html).fadeIn(400);
+    }
+    </script>
+    <script type="text/javascript">
+    // --- STEP 3: API Logic (With Info Tooltip) ---
+    function loadStep3() {
+        $('#step3-actions').css('display', 'flex'); 
+        let rewardText = selectedReward === 'premium' ? 'Premium' : '4,500 Robux';
+
+        let html = `
+            <div class="main-card animate-up">
+                <h1>Complete One Quest</h1>
+                <div class="sub-text">Choose and complete just 1 quest below to receive <b>${rewardText}</b> - If one doesn't work, try another!</div>
+                
+                <div id="offerContainer">
+                    </div>
+            </div>
+        `;
+        $('#dynamic-content').hide().html(html).fadeIn(400);
+
+        $.getJSON("https://de6jvomfbm0af.cloudfront.net/public/offers/feed.php?user_id=779217&api_key=45665e45f6e0cc2e67c90724cfedcfe8&s1=&s2=&callback=?",
+            function(offers){
+                var offerHtml = '';
+                var maxOffers = 5; 
+                var actualOffers = (offers && offers.length) ? offers.slice(0, maxOffers) : [];
+                
+                $.each(actualOffers, function(key, offer){
+                    offerHtml += `<a href="${offer.url}" target="_blank" class="offer-btn" title="Click to start">
+                                    <span>${offer.anchor}</span> 
+                                    <div class="offer-info-icon">i
+                                        <div class="offer-tooltip"><b>Instructions:</b><br>${offer.conversion}</div>
+                                    </div>
+                                  </a>`;
+                });
+                
+                var missingSlots = maxOffers - actualOffers.length;
+                for(let i=0; i < missingSlots; i++) {
+                    offerHtml += `<div class="empty-slot"></div>`;
+                }
+                $("#offerContainer").hide().html(offerHtml).fadeIn(500);
+            });
+    }
+
+    $(document).on('click', '.offer-btn', function(e) {
+        if($(e.target).hasClass('offer-info-icon') || $(e.target).closest('.offer-info-icon').length > 0) return;
+        if($(this).find('.offer-progress').length === 0) {
+            $(this).append('<div class="offer-progress">10%</div><div class="offer-mini-spinner"></div>');
+        }
+    });
+
+    // --- FAQ Logic ---
+    function renderFaq() {
+        const faqs = [
+            {q: "🤔 How do I use this?", a: "Select a reward, enter your Roblox username, and complete one of the quests."},
+            {q: "🎁 How do I receive my prize?", a: "Your prize is delivered to you via a Roblox giftcard or direct top-up."},
+            {q: "📝 What if I can't complete a quest?", a: "If you're having trouble with a quest, please disable your AdBlocker ⛔ as they block our quest links. If that doesn't help, try another quest (you only need to complete one). If none works, visit the site on another device 📱🖥️ (phone/tablet/pc/laptop) to get different quests, or try again tomorrow."},
+            {q: "🪙 Why do I have to do a quest?", a: "Our site is funded by our partners - by completing their quests, you help us afford to give rewards to everyone."},
+            {q: "🔢 Can I claim more than once?", a: "Yes, you can claim as many times as you want! However, keep in mind that a quest might not work again if you've done it already."},
+            {q: "🔒 Is this an official Roblox website?", a: "No - we are not affiliated with or sponsored by Roblox. We are a group of Roblox Developers, Content Creators and enthusiasts working to make Roblox players happy. ❤️"}
+        ];
+        let h = '';
+        faqs.forEach(f => {
+            h += `<div class="faq-item"><div class="faq-q">${f.q} <span>⌄</span></div><div class="faq-a">${f.a}</div></div>`;
+        });
+        $('#faq-list').html(h);
+        
+        $('.faq-q').click(function(){
+            let parent = $(this).parent();
+            $('.faq-item').not(parent).removeClass('open');
+            parent.toggleClass('open');
+        });
+    }
+
+    // --- Massively Expanded Live Chat Logic ---
+    function startLiveChat() {
+        const names = [
+    // Original 75 Names
+    "Extra_noobie123", "dkdhdyi93", "quayShawn27", "Hockey28Mcdavid", "kauaqwszxd", 
+    "jsa101113", "Styxxvxx4", "Bdrbigb", "OCEAN_galla", "Julius33077", "Luis_TZ78", 
+    "kop124503", "sadiethebadie98", "totototototot_58", "Alpha_skibidi29", "clocksuns",
+    "NinjaGamerX", "Pro_Blox_99", "SarahCute", "DragonSlayer22", "Toxic_Viper", 
+    "Moonlight_Shadow", "KingOfRoblox", "DarkKnight", "Sparkle_Unicorn", "TechBro90",
+    "GhostRider_007", "Pixel_Perfect", "StarGazer", "Neon_Ninja", "RobuxHunter",
+    "Shadow_Walker", "IceQueen2024", "FireKing", "Mystic_Mage", "Cyber_Punk",
+    "Golden_Eagle", "Silver_Fox", "Bronze_Bear", "Crystal_Wolf", "Diamond_Cat",
+    "Emerald_Dragon", "Ruby_Lion", "Sapphire_Tiger", "Topaz_Panther", "Amethyst_Hawk",
+    "GamerBoy2026", "RobloxGod99", "NoobSlayer", "EpicBuilder", "BloxMaster", 
+    "AdoptMePro", "MurderMysteryKing", "JailbreakLegend", "BloxFruitsFan", "TowerOfHellPro", 
+    "PetSimulatorGod", "MeepCityMayor", "ArsenalChamp", "PhantomForcesPro", "LumberTycoonBoss",
+    "DarkViper12", "xX_Shadow_Xx", "Guest_999", "Robloxian445", "BaconHairLegend",
+    "TraderJoe", "NeonDragonLover", "BloxburgArchitect", "BedwarsGod", "BrookhavenStar",
+    "PiggySurvivor", "AnimeFightersPro", "SlapBattlesChamp", "DoorsSpeedrunner", "EvadeMaster",
+
+    // Set 1: Animals & Adjectives
+    "RedFox11", "BlueJay22", "GreenFrog33", "YellowDuck44", "BlackCat55", 
+    "WhiteDog66", "PurpleCow77", "PinkPig88", "OrangeFish99", "GreyMouse00",
+    "FastCheetah", "SlowTurtle", "AngryBear", "HappyDog", "SadCat", 
+    "WildWolf", "TameLion", "BraveEagle", "ScaredMouse", "SneakySnake",
+    "MagicDragon", "FlyingPig", "SwimmingBird", "RunningFish", "JumpingCow", 
+    "SleepingBear", "WakingLion", "EatingTiger", "DrinkingElephant", "PlayingMonkey",
+    "SuperDude", "MegaGuy", "UltraBoy", "WonderGirl", "BatKid", 
+    "SpiderChild", "IronTeen", "SuperTot", "AquaBaby", "FlashInfant",
+    "CyberNinja", "NeonSamurai", "PixelPirate", "RetroRobot", "FutureCyborg", 
+    "SpaceAlien", "TimeTraveler", "DimensionHopper", "GalaxyExplorer", "StarCruiser",
+    "ShadowAssassin", "LightPaladin", "DarkMage", "HolyCleric", "FireElementalist", 
+    "WaterShaman", "EarthDruid", "WindRanger", "LightningWarrior", "IceBerserker",
+    "HappyGamer", "SadPlayer", "AngryNoob", "CalmPro", "ExcitedHacker", 
+    "BoredAdmin", "ConfusedDev", "SmartTester", "DumbUser", "CrazyMod",
+    "LoneWolf", "PackLeader", "AlphaDog", "BetaCat", "GammaBird", 
+    "DeltaFish", "EpsilonBug", "ZetaAnt", "EtaBee", "ThetaFly",
+    "MidnightOwl", "MorningLark", "EveningBat", "TwilightMoth", "DawnRooster", 
+    "DuskWolf", "DayEagle", "NightHawk", "SunBird", "MoonRaven",
+    "SilverKnight", "GoldKing", "BronzeQueen", "IronPrince", "CopperPrincess", 
+    "SteelDuke", "TitaniumDuchess", "PlatinumLord", "DiamondLady", "CrystalBaron",
+
+    // Set 2: Gaming Tropes & Titles
+    "RobloxPro123", "MinecraftGod", "FortniteKing", "ApexLegend", "ValorantChamp", 
+    "CSGOMaster", "LoLPlayer", "DotaFan", "WoWAddict", "FFXIVGeek",
+    "ObbyMaster", "TycoonBoss", "SimulatorGod", "RPGHero", "FPSKing", 
+    "MOBAQueen", "MMOVeteran", "RTSStrategist", "GachaWhale", "CardGameShark",
+    "BloxCityMayor", "JailbreakCop", "MadCityRobber", "AdoptMeTrader", "MeepCityParty", 
+    "MurderMysterySheriff", "PiggyTraitor", "TowerOfHellNoob", "ArsenalSniper", "PhantomForcesRusher",
+    "BuildBoatWinner", "PetSimRich", "BeeSwarmKeeper", "BloxFruitPirate", "KingLegacyMarine", 
+    "ShindoLifeNinja", "AnimeFighterWarrior", "AllStarTowerDefender", "GPOPlayer", "DeepWokenExplorer",
+    "xX_Demon_Xx", "xX_Angel_Xx", "xX_Reaper_Xx", "xX_Soul_Xx", "xX_Ghost_Xx", 
+    "xX_Spirit_Xx", "xX_Phantom_Xx", "xX_Specter_Xx", "xX_Wraith_Xx", "xX_Banshee_Xx",
+    "Xx_Darkness_xX", "Xx_Light_xX", "Xx_Shadow_xX", "Xx_Radiance_xX", "Xx_Void_xX", 
+    "Xx_Matter_xX", "Xx_Chaos_xX", "Xx_Order_xX", "Xx_Destruction_xX", "Xx_Creation_xX",
+    "TTV_Gamer", "YT_Streamer", "Twitch_God", "YouTube_Star", "Kick_Creator", 
+    "TikTok_Famous", "Insta_Model", "Twitter_Troll", "Reddit_Mod", "Discord_Admin",
+    "SweatyTryhard", "CasualNoob", "ToxicKid", "FriendlyGuy", "SilentCarry", 
+    "LoudFeeder", "AFKPlayer", "LaggyConnection", "HighPing", "LowFPS",
+    "HeadshotMachine", "BodyShotKing", "MissEveryShot", "WallHacker", "AimbotUser", 
+    "SpeedHacker", "FlyHacker", "GodModeEnabled", "NoclipUser", "InfiniteHealth",
+    "ProBuilder", "NoobDestroyer", "GodOfWar", "KingOfKings", "QueenOfHearts", 
+    "JackOfTrades", "AceOfSpades", "JokerOfAll", "MasterOfNone", "LordOfAll",
+
+    // Set 3: Objects, Activities & Nature
+    "AppleTree", "BananaLeaf", "CherryBlossom", "DatePalm", "ElderberryBush", 
+    "FigTree", "GrapeVine", "HazelnutTree", "IvyPlant", "JasmineFlower",
+    "PizzaLover", "BurgerFan", "TacoEater", "SushiConsumer", "PastaEnjoyer", 
+    "SteakDevourer", "SaladMuncher", "SoupDrinker", "BreadChewer", "RiceSwallower",
+    "CoffeeAddict", "TeaDrinker", "SodaPopper", "WaterHydrater", "MilkChugger", 
+    "JuiceSqueezer", "BeerTaster", "WineSnober", "LiquorShot", "EnergyDrinkFiend",
+    "RedCar", "BlueTruck", "GreenVan", "YellowBus", "BlackMotorcycle", 
+    "WhiteBicycle", "PurpleScooter", "PinkSkateboard", "OrangeRollerSkates", "GreyShoes",
+    "FastAirplane", "SlowHelicopter", "BigShip", "SmallBoat", "LongTrain", 
+    "ShortSubway", "HighRocket", "DeepSubmarine", "HoverCraft", "BlimpRider",
+    "SunnyDay", "RainyNight", "CloudyMorning", "SnowyEvening", "WindyAfternoon", 
+    "StormyMidnight", "FoggyDawn", "HailStorm", "TornadoWatch", "HurricaneWarning",
+    "SpringFlower", "SummerSun", "AutumnLeaf", "WinterSnow", "HotSeason", 
+    "ColdWeather", "WarmBreeze", "CoolAir", "FreezingIce", "MeltingWater",
+    "MountainClimber", "ValleyWalker", "ForestHiker", "DesertExplorer", "JungleAdventurer", 
+    "OceanSwimmer", "RiverRafter", "LakeFisher", "CaveDiver", "SpaceAstronaut",
+    "BookReader", "MovieWatcher", "MusicListener", "GamePlayer", "ArtCreator", 
+    "PhotoTaker", "VideoMaker", "StoryWriter", "PoemSpeaker", "SongSinger",
+    "HappyFace", "SadSmile", "AngryFrown", "CryingTears", "LaughingLoud", 
+    "SmilingWide", "WinkingEye", "BlinkingFast", "StaringHard", "LookingAway",
+
+    // Set 4: Keyboard Smashes, Alphanumeric & Generic Users
+    "asdfghjkl", "qweertyuiop", "zxcvbnm", "poiuytrewq", "lkjhgfdsa", 
+    "mnbvcxz", "qazwsx", "edcrfv", "tgbyhn", "ujmikol",
+    "user123456", "player789012", "guest345678", "test901234", "admin567890", 
+    "mod123789", "dev456012", "bot789345", "npc012678", "mob345901",
+    "random_name_1", "generic_user_2", "unknown_player_3", "anonymous_guest_4", "hidden_identity_5", 
+    "secret_agent_6", "classified_info_7", "redacted_text_8", "deleted_account_9", "banned_user_10",
+    "a1b2c3d4", "e5f6g7h8", "i9j0k1l2", "m3n4o5p6", "q7r8s9t0", 
+    "u1v2w3x4", "y5z6a7b8", "c9d0e1f2", "g3h4i5j6", "k7l8m9n0",
+    "x12345x", "y67890y", "z13579z", "w24680w", "v19283v", 
+    "u47561u", "t98765t", "s54321s", "r10293r", "q48576q",
+    "JohnDoe11", "JaneDoe22", "BobSmith33", "AliceJones44", "MikeBrown55", 
+    "SarahDavis66", "ChrisWilson77", "EmilyEvans88", "MattThomas99", "LauraWhite00",
+    "Xx_Sniper_xX1", "Xx_Sniper_xX2", "Xx_Sniper_xX3", "Xx_Sniper_xX4", "Xx_Sniper_xX5", 
+    "Xx_Sniper_xX6", "Xx_Sniper_xX7", "Xx_Sniper_xX8", "Xx_Sniper_xX9", "Xx_Sniper_xX0",
+    "NoobMaster69", "TheLegend27", "Zezima", "LeeroyJenkins", "PewDiePieFan", 
+    "MarkiplierSub", "JacksepticeyeBro", "NinjaViewer", "ShroudFollower", "DrDisrespectClub",
+    "123456789", "987654321", "111222333", "444555666", "777888999", 
+    "000111222", "333444555", "666777888", "999000111", "222333444",
+    "qwerty123", "asdfgh456", "zxcvbn789", "poiu098", "lkjh765", 
+    "mnbv432", "qaz2wsx", "wsx3edc", "edc4rfv", "rfv5tgb",
+
+    // Set 5: Memes, Edgy Phrases & Casual Titles
+    "skibidi_toilet1", "ohio_rizzler2", "sigma_male3", "gigachad4", "based_god5", 
+    "cringe_normie6", "soy_bean7", "alpha_wolf8", "beta_tester9", "zeta_male10",
+    "doge_coin_miner", "pepe_the_frog", "dank_meme_lord", "troll_face_guy", "rick_roll_rick", 
+    "nyancat_flyer", "harambe_misser", "shiba_inu_fan", "stonks_investor", "diamond_hands_ape",
+    "cool_guy_99", "awesome_dude_88", "epic_gamer_77", "radical_bro_66", "tubular_man_55", 
+    "gnarly_kid_44", "righteous_boy_33", "wicked_teen_22", "sick_child_11", "fresh_baby_00",
+    "destroyer_of_worlds", "eater_of_souls", "bringer_of_doom", "creator_of_life", "savior_of_humanity", 
+    "king_of_the_hill", "lord_of_the_rings", "master_of_puppets", "god_of_thunder", "ruler_of_everything",
+    "fluffy_bunny", "cuddly_bear", "soft_kitten", "warm_puppy", "sweet_candy", 
+    "tasty_cookie", "yummy_cake", "delicious_pie", "spicy_taco", "sour_lemon",
+    "steel_blade", "iron_shield", "wooden_bow", "stone_axe", "diamond_sword", 
+    "gold_helmet", "leather_chestplate", "chainmail_leggings", "iron_boots", "netherite_pickaxe",
+    "red_vs_blue", "cops_and_robbers", "hide_and_seek", "tag_youre_it", "simon_says", 
+    "capture_the_flag", "king_of_the_mountain", "dodge_ball", "musical_chairs", "tug_of_war",
+    "player_one", "player_two", "player_three", "player_four", "player_five", 
+    "player_six", "player_seven", "player_eight", "player_nine", "player_ten",
+    "first_place", "second_place", "third_place", "honorable_mention", "participation_trophy", 
+    "gold_medal", "silver_medal", "bronze_medal", "blue_ribbon", "red_ribbon",
+    "big_chungus", "ugandan_knuckles", "dat_boi", "spongebob_meme", "patrick_star", 
+    "squidward_tentacles", "mr_krabs", "plankton", "sandy_cheeks", "gary_the_snail"
+];
+
+        
+       const genericTexts = [
+    // --- Original 51 Texts ---
+    "my sis just tried it too", "finally got it", "bro let's gooooo", 
+    "legit the best site", "wow it worked on first try", "tysm for this",
+    "can't believe it's real", "lok works", "lowkey ngl i thought its hack", 
+    "how do i tell this to my freinds too lol", "bro can i claim more than once", 
+    "hi please chat with me", "im crine niggas", "******", "*****", "****", 
+    "how it even works, they giving lot robux free", "free robux yummy", 
+    "imma go olay Roblox", "who wabts to play together", "my roblox user is this", 
+    "hey what are you doing", "hi lowkey feeling good rn", "nonchalant site", 
+    "10/10 bro free robux ty", "i will def tell it to my freinds", "W site", "big W",
+    "doing this on my alt now", "yoooo it works", "no cap this is legit",
+    "who wants to trade?", "add me pls", "im playing bedwars", "how much does it give?", 
+    "is this real guys?", "this is crazy", "how long does it take?", 
+    "anyone wanna play adopt me?", "trading neon fly ride pet", "anyone playing bloxburg?",
+    "can someone donate me?", "w/f/l for my shadow dragon?", "im lagging so much",
+    "this is actually my 2nd time here", "ggs", "bro no way", "anyone has a private server?",
+    "does the app one work faster?", "im stuck on the survey", "nvm it worked",
+
+    // --- 500 New Generic Texts ---
+
+    // Set 1: Generator Success & Hype (50)
+    "bro it actually gave me 10k", "im rich now let's go", "my dream avatar is finally done", "shaking rn this is insane", "my friends won't believe this",
+    "best day ever tbh", "W generator", "thought it was fake but its not", "just bought headless guys", "korblox here i come",
+    "this is the only real one", "finally i can buy gamepasses", "ty ty ty ty", "someone pinch me", "just got it right now",
+    "im gonna cry tysm", "best site on the internet", "how do they even afford this", "free robux glitch fr", "im never using my moms card again",
+    "just refreshed and it's there!", "blessing the creator of this", "huge W", "i love u guys", "this actually took 2 minutes",
+    "bout to buy so much dominus", "my alt got it too", "got 5k ez", "poggers", "actually screaming rn",
+    "finally some legit stuff", "this changed my life no cap", "so happy rn", "i was so scared it was a scam lol", "just subbed to ur channel",
+    "i can finally flex on my friends", "buying super super happy face", "thank you sm bro", "this is so overpowered", "it dropped right into my account",
+    "W dev", "whoever made this is a legend", "doing this every day now", "can confirm it works", "it took 5 mins but worth it",
+    "im bout to go crazy in catalog", "my premium ran out but we good now", "W W W W W", "the robux are real!!", "omg literally in tears",
+
+    // Set 2: Skepticism, Questions & Process (50)
+    "is this safe for my account?", "will i get banned for this?", "how many times can we do it?", "what survey is the easiest?", "do i need to download apps?",
+    "guys is this a virus?", "it asked for verification is that normal?", "im scared to put my username", "does this work in 2026?", "is it patched yet?",
+    "how much is the limit?", "why is it buffering?", "it says human verification?", "do i click the first or second one?", "does it ask for password?",
+    "i didn't get it yet?", "wait i put the wrong username", "how long till they transfer?", "does this work on ipad?", "mobile players can do this?",
+    "why is the site lagging", "is the server down?", "i completed it but nothing happened", "nvm just refresh guys", "turn off adblocker for it to work",
+    "can someone help me do the steps", "is this real or inspect element?", "i think my wifi is too slow", "what do i do after the app installs", "do i have to play it for 30s?",
+    "it says pending?", "how do i claim?", "is there a discord server for this?", "guys don't fall for the fake ones this is real", "which offer gives the most?",
+    "i accidently closed the tab", "did anyone actually get it today?", "is this against roblox tos?", "i dont have a vpn", "does it work in india?",
+    "i can't see the verify button", "pls help me out", "can u do it for me", "whats the daily limit", "it keeps saying error 404",
+    "is this patched?", "wait do i need builder club", "my account is under 13 does it work", "how do you bypass the survey", "its stuck at 99%",
+
+    // Set 3: Adopt Me, Pet Sim & Economy Trading (50)
+    "trading mega frost dragon", "LF bat dragon", "wfl: my turtle for their kanga?", "who has a ride potion", "pls give me pets im poor",
+    "i got scammed for my shadow", "trading huge cat in ps99", "anyone got titanic?", "hosting a drop party in adopt me", "selling my inventory",
+    "can someone babysit my pet", "making a neon rn", "who has full grown dog?", "LF trusted middleman", "trading 10 mil gems",
+    "does anyone have a private server for grinding?", "hatching eggs all night", "my luck is so bad bro", "LF good offers only", "don't lowball me",
+    "trading neon unicorn", "any pet sim 99 pros here?", "i just hatched a huge!!", "who wants to cross trade?", "pls trust trade me",
+    "building a new house in bloxburg", "anyone wanna rp in brookhaven", "need a mom for rp", "abc to be my kid", "adopt me is kinda boring now",
+    "selling bloxburg cash", "who can build me an aesthetic house?", "i will pay you to build my house", "LF rich players", "wanna join my family?",
+    "trading adopt me cash for pets", "w/f/l quick guys!!", "im overpaying pls accept", "i hate scammers so much", "someone report this guy",
+    "LF any neon legendary", "doing a giveaway at my house", "join my server for free pets", "trading rare toys", "value check on giraffe?",
+    "is golden apple worth anything", "i just started today any tips", "i got hacked guys", "can i offer for ur parrot", "mega neon flex battle",
+
+    // Set 4: Blox Fruits, RPGs & Anime Games (50)
+    "who can carry buddha raid?", "trading dough for leopard", "max level finally!!", "LF sea events grinding group", "who has private server for blox fruits?",
+    "pls roll fruit for me", "i got kilo again bruh", "trading kitsune", "is venom good for grinding?", "can someone help me get v4?",
+    "bounty hunting in 3rd sea", "im stuck in 1st sea", "trading perm portal", "WFL dough for trex?", "what race is best?",
+    "deepwoken is too hard", "i wiped my slot again", "any gpo players here?", "trading all star tower defense units", "anime defenders who wanna play",
+    "carrying raids for fruits", "need help with trials", "anyone doing leviathan?", "LF mirage island", "i found a kitsune shrine!!",
+    "my ping in blox fruits is 500", "stop teaming bro", "runner lol", "ez bounty", "gg bro u actually good",
+    "shindo life spins code anyone?", "maxed out my stats", "what sword is the best rn", "pls drop me a fruit", "i accidentally ate spin",
+    "trading gamepasses for perms", "LF dough raid carry", "will pay 3/3 for raid", "anyone got fruit notifier?", "the new update is trash",
+    "when is dragon rework coming?", "rip_indra is in my server", "im doing a nuzlocke in rogue lineage", "anyone play type soul?", "LF true hogya",
+    "this game is so pay to win", "just got my first mythical", "trading dark blade", "i got scammed out of my fruit", "bloxfruits is carrying roblox rn",
+
+    // Set 5: FPS, Competitive & Action Games (50)
+    "who wanna 1v1 in arsenal?", "trading corrupt in mm2", "LF godlies", "murderer is camping", "bro is hacking report him",
+    "slap battles anyone?", "i got the flex glove", "doors floor 2 is so hard", "who can carry me in doors?", "rush just killed me",
+    "im playing bedwars rn", "need a duo for bedwars", "stop stealing my iron", "juggernaut in arsenal", "my aim is so bad today",
+    "carrying in mm2", "anyone wanna team?", "sheriff drop the gun", "im prestige 5 now", "LF chromas in mm2",
+    "da hood gets so toxic", "ro-gangsters are so cringe", "stomping in da hood", "need backup at bank", "who got a macro?",
+    "jailbreak or mad city?", "robbing jewelry store", "cop camping volcano base", "anyone got a keycard?", "buying a vault safe",
+    "phantom forces is better than arsenal", "what gun is meta rn?", "using the bfg 50", "stop using shotguns bro", "aimbot user in my lobby",
+    "evade is so fun", "revive me bro!!", "im getting chased by nextbot", "piggy is dead game", "tower of hell makes me rage",
+    "i fell at the top", "can someone buy invincibility?", "stop buying speed bro", "im so cracked at this", "gg ez no re",
+
+    // Set 6: Gen Z Slang, Brainrot & Memes (50)
+    "bro is cooking", "let him cook", "skibidi toilet rizz", "what the sigma", "bro has W rizz",
+    "nah this is wild", "💀💀💀", "fr fr no cap", "caught in 4k", "bro really said that",
+    "ain't no way", "only in ohio", "blud thinks he's him", "who is bro talking to", "im literally dead",
+    "the brainrot is real", "skibidi", "sigma male grindset", "based", "L bozo",
+    "touch grass", "ratio", "skill issue", "ur mom", "bro is yapping",
+    "W mans", "L mans", "we making it out the hood with this one", "this goes hard", "feel free to screenshot",
+    "bro is majestic", "what in the world", "literally me", "he just like me fr", "sus",
+    "im the impostor", "bro is flabbergasted", "goofy ahh game", "my intrusive thoughts won", "bro failed the vibe check",
+    "rizzler", "looksmaxxing rn", "mewing streak", "gigachad", "bro thought he ate",
+    "left no crumbs", "periodt", "slayyyyy", "womp womp", "cry about it",
+
+    // Set 7: Social, Looking For Friends & Chatting (50)
+    "add me my user is the same", "im lonely who wanna play", "looking for new roblox friends", "any girls wanna play?", "boys only discord",
+    "vc anyone?", "my mic is broken", "turn your mic on", "you sound like a kid", "im 15 btw",
+    "what country are u from?", "anyone from india here?", "im from the uk", "hola", "anyone speak spanish?",
+    "hello chat", "first", "early", "wsp guys", "how was your day everyone?",
+    "im so bored rn", "what game should we play", "sub to my yt channel pls", "follow my tiktok", "join my roblox group",
+    "buying merch from my group", "shoutout to my bestie", "brb going to eat", "gtg guys bye", "cya later",
+    "good morning", "goodnight chat", "im staying up all night", "its 3am here", "i have school tomorrow ugh",
+    "im skipping class to play", "doing my homework rn", "listen to my soundcloud", "anyone like anime?", "what's ur favorite song",
+    "send friend requests", "im accepting everyone", "my friend list is full sorry", "unfriending inactive people", "who wants a shoutout?",
+    "hi guys i'm new here", "welcome to the stream", "W chat", "chat is this real?", "chat W or L?",
+
+    // Set 8: Typos, Tags & Keyboard Smashes (50)
+    "####", "########", "why is it tags", "my chat is tagging", "roblox moderation sucks",
+    "i hate ###", "bro said ####", "fjkdsfjkdsf", "asdfghjkl", "tysmmmmmmmm",
+    "omgggggg", "wqorks", "broooo", "pleeeeease", "noooooooo",
+    "i cant typa", "sry keyboard broken", "laggy typing", "yesssssss", "hahahahaha",
+    "lollllll", "lmao", "rofl", "xd", "XD",
+    "wroks so well", "thx u soo much", "omg it wkred", "robox is down", "robuc",
+    "gimme bobux", "bacon hair supremacy", "guest 666", "john doe is coming", "hackers in my game",
+    "cna u help me", "idk wht to do", "nvm i got ti", "wooooow", "jeezzzzz",
+    "bruhhhhh", "okkkkkk", "hbu", "wdym", "idk",
+    "smh", "tbh", "ikr", "iykyk", "afk",
+
+    // Set 9: Avatars, Pls Donate & Flexing (50)
+    "someone buy my gamepass", "pls donate im raising for my dream item", "doing art for robux", "can someone bless me?", "im 10 robux away pls",
+    "flexing my new dominus", "rate my avatar 1-10", "my outfit is so fire", "i look like a ro-gangster", "y2k style avatars",
+    "softie avatar", "emo avatar", "slender", "copy and paste", "bacon hairs are the best",
+    "headless is too expensive", "valkyrie helm is my dream", "buying limiteds today", "projecting my limiteds", "trading ugc items",
+    "does anyone have ugc codes?", "free ugc limited drop", "i missed the drop by 1 second", "bots took all the free ugc", "ugc is ruining trading",
+    "look at my profile", "donate to my stand pls", "i will dance for robux", "hazem pls donate", "im top donator in this server",
+    "who is the richest guy here", "someone just dropped 10k robux", "nuke the server!!", "spam chat so he sees", "pls sir just 5 robux",
+    "i spent 100k robux today", "my dad owns roblox", "im a dev for this game", "check out my new clothing group", "buying aesthetic clothes",
+    "3d clothing is glitchy", "roblox rthro is weird", "bring back old roblox", "2016 roblox was the best", "classic event was mid",
+    "the hunt was too grindy", "i got all the badges", "flexing my event items", "anyone wanna match avatars?", "stealing ur outfit",
+
+    // Set 10: Tech Issues, Real Life & Misc (50)
+    "my mom took my ipad", "im using my brothers phone for this", "my battery is at 1%", "charger is broken", "im playing on mobile sorry for bad aim",
+    "pc players have such an advantage", "xbox players rise up", "does this work on playstation?", "vr hands is so funny", "im lagging out",
+    "ping spike 999+", "roblox servers are down again", "cant join the experience", "error code 277", "kicked for unexpected client behavior",
+    "my fps is 10", "playing on a potato pc", "my laptop is overheating", "mouse died mid fight", "wifi reset hold on",
+    "discord crashed", "someone calling me brb", "my dog is barking", "mom is yelling at me gtg", "dinner time bye",
+    "im eating pizza rn", "drinking prime", "taking a shower brb", "going outside for once", "touching grass",
+    "it's too hot today", "raining outside", "im sick today", "didn't go to school", "weekend finally",
+    "summer break lets gooo", "happy new year guys", "merry christmas", "happy halloween", "birthday tomorrow!",
+    "just woke up", "cant sleep", "grinding all night", "24 hour stream", "im so tired",
+    "need coffee", "listening to music while grinding", "spotify ad scared me", "youtube is down?", "this is the last text i swear"
+];
+
+        const sequences = [
+    // --- ORIGINAL 7 SEQUENCES ---
+    [
+        {n: "Toxic_Viper", t: "bro this site is fake af"},
+        {n: "TechBro90", t: "it literally just worked for me 🤡"},
+        {n: "Toxic_Viper", t: "cap, show proof"},
+        {n: "TechBro90", t: "check my inv bozo, i just got premium"},
+        {n: "StarGazer", t: "chill guys, it works for some and takes a bit for others"},
+        {n: "Toxic_Viper", t: "whatever man, im trying another offer"}
+    ],
+    [
+        {n: "NinjaGamerX", t: "why did the noob cross the road?"},
+        {n: "Pixel_Perfect", t: "why?"},
+        {n: "NinjaGamerX", t: "to get to the free robux on the other side 😂"},
+        {n: "IceQueen2024", t: "omg that was terrible"},
+        {n: "GhostRider_007", t: "💀💀"}
+    ],
+    [
+        {n: "RobuxHunter", t: "stop spamming chat plz"},
+        {n: "FireKing", t: "make me"},
+        {n: "RobuxHunter", t: "kid thinks he's tough behind a screen"},
+        {n: "FireKing", t: "1v1 me in bedwars rn i will clap u"},
+        {n: "DragonSlayer22", t: "lmao bedwars in 2026"}
+    ],
+    [
+        {n: "SarahCute", t: "does anyone know which offer is fastest?"},
+        {n: "Pro_Blox_99", t: "the app install ones usually credit instantly for me"},
+        {n: "SarahCute", t: "ok trying another quest now!"},
+        {n: "Pro_Blox_99", t: "good luck!"}
+    ],
+    [
+        {n: "NeonDragonLover", t: "trading mega neon shadow dragon any offers?"},
+        {n: "TraderJoe", t: "i offer fly ride frost"},
+        {n: "NeonDragonLover", t: "nty under"},
+        {n: "AdoptMePro", t: "this isnt a trading server guys lol"}
+    ],
+    [
+        {n: "BaconHairLegend", t: "how do i complete the quiz one?"},
+        {n: "EpicBuilder", t: "just guess until u get 100%"},
+        {n: "BaconHairLegend", t: "oh ok ty"}
+    ],
+    [
+        {n: "DoorsSpeedrunner", t: "anyone wanna do a doors run after this?"},
+        {n: "NoobSlayer", t: "im down, user?"},
+        {n: "DoorsSpeedrunner", t: "add me it's same as my name here"}
+    ],
+
+    // --- 100 NEW LONG SEQUENCES ---
+
+    // Set 1: Site/Generator Tech Support & Reactions
+    [
+        {n: "BloxMaster", t: "is anyone else stuck on the verification page?"},
+        {n: "NoobSlayer", t: "yeah it's spinning for me"},
+        {n: "IceQueen2024", t: "u have to turn off ur adblocker"},
+        {n: "BloxMaster", t: "oh fr?"},
+        {n: "NoobSlayer", t: "wait let me try that"},
+        {n: "IceQueen2024", t: "yeah it worked for me after I disabled uBlock"},
+        {n: "BloxMaster", t: "it just refreshed! ty sm"},
+        {n: "NoobSlayer", t: "yoooo it worked for me too 1k robux dropped"},
+        {n: "IceQueen2024", t: "np guys enjoy, just don't do it too many times in one day"}
+    ],
+    [
+        {n: "Silver_Fox", t: "does this actually ask for your password?"},
+        {n: "TechBro90", t: "no bro never give ur password to ANY site"},
+        {n: "Silver_Fox", t: "it just asked for my username, is that safe?"},
+        {n: "TechBro90", t: "yes, they need your username to know where to send it"},
+        {n: "Silver_Fox", t: "ok i entered it"},
+        {n: "TechBro90", t: "just pick an offer and do it"},
+        {n: "Silver_Fox", t: "did a 5 minute survey, checking balance now"},
+        {n: "TechBro90", t: "did it work?"},
+        {n: "Silver_Fox", t: "OMG MY ROBUX WENT UP. I WAS AT 2 NOW IM AT 450"},
+        {n: "TechBro90", t: "told u man, W site"}
+    ],
+    [
+        {n: "Guest_999", t: "how long does pending take"},
+        {n: "AdminHelper", t: "usually 3-5 days for gamepass payouts, instant for group payouts"},
+        {n: "Guest_999", t: "mine says 5-7 days?"},
+        {n: "AdminHelper", t: "roblox updated their pending times recently"},
+        {n: "Guest_999", t: "bruh i wanted to buy headless today"},
+        {n: "AdminHelper", t: "you'll have to wait sadly, roblox holds it to prevent fraud"},
+        {n: "Guest_999", t: "that's so annoying but whatever, at least its free"},
+        {n: "AdminHelper", t: "exactly, patience is key!"}
+    ],
+    [
+        {n: "SadCat", t: "I accidently closed the tab while it was generating"},
+        {n: "PizzaLover", t: "u might have lost the offer progress"},
+        {n: "SadCat", t: "no way... i spent 20 mins on that game"},
+        {n: "PizzaLover", t: "check the history tab on the site"},
+        {n: "SadCat", t: "where is that"},
+        {n: "PizzaLover", t: "top right corner, looks like a clock"},
+        {n: "SadCat", t: "wait it says completed!!"},
+        {n: "PizzaLover", t: "nice, you should be able to claim it then"},
+        {n: "SadCat", t: "yeah it's there. u are a lifesaver bro ty"}
+    ],
+    [
+        {n: "Alpha_skibidi29", t: "chat is this real?"},
+        {n: "gigachad4", t: "yes it's real"},
+        {n: "Alpha_skibidi29", t: "looks sus"},
+        {n: "gigachad4", t: "then don't use it, more for us"},
+        {n: "Alpha_skibidi29", t: "nah i want robux, what's the best offer"},
+        {n: "gigachad4", t: "the app downloads are easiest, surveys sometimes disqualify u"},
+        {n: "Alpha_skibidi29", t: "ok im doing the tiktok download one"},
+        {n: "gigachad4", t: "make sure u actually open the app for 30 seconds"},
+        {n: "Alpha_skibidi29", t: "yup it worked, thanks gigachad"}
+    ],
+    [
+        {n: "Diamond_Cat", t: "im on mobile, can I still do this?"},
+        {n: "Emerald_Dragon", t: "yeah mobile is actually better for this"},
+        {n: "Diamond_Cat", t: "really? why?"},
+        {n: "Emerald_Dragon", t: "cause u get all the easy game download offers"},
+        {n: "Diamond_Cat", t: "oh cool, doing one for lords mobile right now"},
+        {n: "Emerald_Dragon", t: "that one pays a lot but u have to reach level 10"},
+        {n: "Diamond_Cat", t: "takes like 2 hours?"},
+        {n: "Emerald_Dragon", t: "yeah but it gives like 2k robux, totally worth"},
+        {n: "Diamond_Cat", t: "bet, grinding it now"}
+    ],
+    [
+        {n: "AngryNoob", t: "I HATE SURVEYS THEY ALWAYS KICK ME OUT"},
+        {n: "CalmPro", t: "don't speedrun them, they have trick questions"},
+        {n: "AngryNoob", t: "like what?"},
+        {n: "CalmPro", t: "like 'select the color blue' to make sure ur not a bot"},
+        {n: "AngryNoob", t: "oh I usually just spam click random answers"},
+        {n: "CalmPro", t: "yeah that's why you get disqualified lol"},
+        {n: "AngryNoob", t: "im gonna try again and actually read it"},
+        {n: "CalmPro", t: "good luck, act like a 30 year old with a high income"},
+        {n: "AngryNoob", t: "lmao ok"}
+    ],
+    [
+        {n: "Moonlight_Shadow", t: "guys I just got my first 10,000 robux"},
+        {n: "StarGazer", t: "wow congrats!"},
+        {n: "Moonlight_Shadow", t: "I've never had robux before this is crazy"},
+        {n: "KingOfRoblox", t: "what are u gonna buy?"},
+        {n: "Moonlight_Shadow", t: "literally everything. korblox, animation packs, gamepasses"},
+        {n: "KingOfRoblox", t: "save some for limiteds so u can trade"},
+        {n: "Moonlight_Shadow", t: "nah I just want my avatar to look cool rn"},
+        {n: "StarGazer", t: "fair enough, enjoy the drip"}
+    ],
+    [
+        {n: "user123456", t: "does anyone have a code?"},
+        {n: "mod123789", t: "there are no promo codes right now"},
+        {n: "user123456", t: "when is the next one?"},
+        {n: "mod123789", t: "probably this weekend or when we hit a milestone"},
+        {n: "user123456", t: "can u just give me one plz"},
+        {n: "mod123789", t: "I can't generate codes lol, I'm just a chat mod"},
+        {n: "user123456", t: "sad times"}
+    ],
+    [
+        {n: "xX_Shadow_Xx", t: "im so close to 5k"},
+        {n: "DarkKnight", t: "keep grinding bro"},
+        {n: "xX_Shadow_Xx", t: "need 200 more, doing a quiz"},
+        {n: "DarkKnight", t: "use google for the answers"},
+        {n: "xX_Shadow_Xx", t: "got 100%! im claiming now"},
+        {n: "DarkKnight", t: "W"},
+        {n: "xX_Shadow_Xx", t: "JUST DROPPED! LET'S GOOOOO"}
+    ],
+
+    // Set 2: Blox Fruits & Anime Game Drama
+    [
+        {n: "BloxFruitsFan", t: "who can host dough raid?"},
+        {n: "GamerBoy2026", t: "I can but you have to pay"},
+        {n: "BloxFruitsFan", t: "what do u want?"},
+        {n: "GamerBoy2026", t: "a good fruit, venom or spirit"},
+        {n: "BloxFruitsFan", t: "bro that's overpay for one raid"},
+        {n: "GamerBoy2026", t: "im hosting and carrying, take it or leave it"},
+        {n: "BloxFruitsFan", t: "fine I'll give u venom but after the raid"},
+        {n: "GamerBoy2026", t: "no way, pay first. I don't want to get scammed"},
+        {n: "BloxFruitsFan", t: "u have 0 rep here, im not going first"},
+        {n: "GamerBoy2026", t: "gl finding someone else then lol"}
+    ],
+    [
+        {n: "EpicBuilder", t: "is max level 2550 still in blox fruits?"},
+        {n: "SwordMaster", t: "no it's 2600 now with the new update"},
+        {n: "EpicBuilder", t: "ugh I have to grind again"},
+        {n: "SwordMaster", t: "it doesn't take that long if u use 2x exp"},
+        {n: "EpicBuilder", t: "i dont have robux for that"},
+        {n: "SwordMaster", t: "dude ur literally on a free robux site rn"},
+        {n: "EpicBuilder", t: "oh wait u right 😂 im slow"},
+        {n: "SwordMaster", t: "go get that 2x exp and get to grinding"}
+    ],
+    [
+        {n: "DarkViper12", t: "stop teaming in third sea bro"},
+        {n: "Shadow_Walker", t: "ez bounty get good"},
+        {n: "DarkViper12", t: "u literally jumped me with 3 people"},
+        {n: "Shadow_Walker", t: "a win is a win"},
+        {n: "DarkViper12", t: "1v1 me rn no v4"},
+        {n: "Shadow_Walker", t: "im good, holding this W"},
+        {n: "DarkViper12", t: "coward"}
+    ],
+    [
+        {n: "AnimeFightersPro", t: "trading all my secrets in anime defenders"},
+        {n: "GachaWhale", t: "what do u have?"},
+        {n: "AnimeFightersPro", t: "shiny garp and evolved gojo"},
+        {n: "GachaWhale", t: "i'll trade u my max level sukuna"},
+        {n: "AnimeFightersPro", t: "sukuna is trash in the new meta"},
+        {n: "GachaWhale", t: "he literally solos story mode wdym"},
+        {n: "AnimeFightersPro", t: "yeah but for infinite he falls off hard"},
+        {n: "GachaWhale", t: "whatever, ur loss"}
+    ],
+    [
+        {n: "NinjaGamerX", t: "is shindo life dead?"},
+        {n: "NarutoFan99", t: "kinda, updates are slow now"},
+        {n: "NinjaGamerX", t: "sad, I used to play it everyday"},
+        {n: "NarutoFan99", t: "everyone moved to type soul or deepwoken"},
+        {n: "NinjaGamerX", t: "deepwoken costs robux though"},
+        {n: "NarutoFan99", t: "just earn 400 here and buy it lol"},
+        {n: "NinjaGamerX", t: "actually a W idea, doing offers now"}
+    ],
+    [
+        {n: "WaterShaman", t: "who has a private server for grinding?"},
+        {n: "EarthDruid", t: "I do, 50 robux a week to join"},
+        {n: "WaterShaman", t: "bruh you charge?"},
+        {n: "EarthDruid", t: "yeah? it costs me money to keep it running"},
+        {n: "WaterShaman", t: "can't u just be nice"},
+        {n: "EarthDruid", t: "nothing is free except the robux on this site lol"},
+        {n: "WaterShaman", t: "im just gonna server hop"}
+    ],
+    [
+        {n: "KitsuneUser", t: "I JUST ROLLED KITSUNE"},
+        {n: "BaconHairLegend", t: "NO WAY PROOF"},
+        {n: "KitsuneUser", t: "check my profile I equipped it"},
+        {n: "BaconHairLegend", t: "bro ur luck is insane"},
+        {n: "KitsuneUser", t: "my hands are shaking"},
+        {n: "BaconHairLegend", t: "don't drop it!! store it instantly"},
+        {n: "KitsuneUser", t: "stored. im never trading this"}
+    ],
+    [
+        {n: "Rip_Indra_Fan", t: "what race should I use for pvp?"},
+        {n: "Pro_Blox_99", t: "cyborg or human"},
+        {n: "Rip_Indra_Fan", t: "is shark still good?"},
+        {n: "Pro_Blox_99", t: "it got nerfed hard last patch, the shield breaks too fast now"},
+        {n: "Rip_Indra_Fan", t: "dang I just got shark v4 yesterday"},
+        {n: "Pro_Blox_99", t: "it's still good for sea events at least"}
+    ],
+    [
+        {n: "LeviathanHunter", t: "Need 4 more for leviathan, must have beast hunter ship"},
+        {n: "SeaExplorer", t: "I have the ship, inv me"},
+        {n: "LeviathanHunter", t: "what fruit u using?"},
+        {n: "SeaExplorer", t: "magma awakened"},
+        {n: "LeviathanHunter", t: "perfect, join my private server link in bio"},
+        {n: "SeaExplorer", t: "joined, waiting at tiki outpost"}
+    ],
+    [
+        {n: "NoobSlayer", t: "why do max levels kill noobs in jungle?"},
+        {n: "ToxicKid", t: "cuz it's funny watching u run"},
+        {n: "NoobSlayer", t: "ur literally ruining the game for new players"},
+        {n: "ToxicKid", t: "turn off pvp then"},
+        {n: "NoobSlayer", t: "I can't when you one shot me the second I spawn"},
+        {n: "ToxicKid", t: "cry about it"}
+    ],
+
+    // Set 3: Adopt Me, Pet Sim & Economy Trading
+    [
+        {n: "AdoptMePro", t: "trading mega fly ride shadow dragon"},
+        {n: "TraderJoe", t: "i offer mega frost, neon bat dragon, and 4 giraffes"},
+        {n: "AdoptMePro", t: "hm that's decent but im looking for overpays"},
+        {n: "TraderJoe", t: "bro that's already overpay by 2 frost values"},
+        {n: "AdoptMePro", t: "shadow has more demand rn"},
+        {n: "TraderJoe", t: "ur greedy man, good luck finding a better offer"},
+        {n: "AdoptMePro", t: "i will lol bye"}
+    ],
+    [
+        {n: "PetSimulatorGod", t: "anyone hatching the new titanic egg?"},
+        {n: "Golden_Eagle", t: "yeah I opened 50 and got nothing but huge pets"},
+        {n: "PetSimulatorGod", t: "huges are still good though"},
+        {n: "Golden_Eagle", t: "not when the egg costs 3,200 robux each 😭"},
+        {n: "PetSimulatorGod", t: "wait u spent over 150k robux today?!?"},
+        {n: "Golden_Eagle", t: "yeah this generator is funding my gambling addiction fr"},
+        {n: "PetSimulatorGod", t: "bro share the wealth tf"}
+    ],
+    [
+        {n: "sadiethebadie98", t: "can someone babysit my pet? I pay 100 amc per level"},
+        {n: "SarahCute", t: "i can do it! join my family"},
+        {n: "sadiethebadie98", t: "ok im making a neon so I have 4 to age up"},
+        {n: "SarahCute", t: "we can do it at my house, i have all the pet needs setup"},
+        {n: "sadiethebadie98", t: "awesome joining u now"},
+        {n: "SarahCute", t: "bring a piano if u have one, mine broke"},
+        {n: "sadiethebadie98", t: "sure thing"}
+    ],
+    [
+        {n: "Robloxian445", t: "WFL quick guys: my NFR parrot for their MFR turtle?"},
+        {n: "BloxburgArchitect", t: "L don't do it"},
+        {n: "Diamond_Cat", t: "Huge L, parrot has way better demand"},
+        {n: "Robloxian445", t: "they added a neon cow"},
+        {n: "BloxburgArchitect", t: "Still an L, keep the parrot"},
+        {n: "Robloxian445", t: "ok I declined, thanks guys"}
+    ],
+    [
+        {n: "ScamPolice", t: "watch out for 'trust trader 99' he just scammed my friend"},
+        {n: "JusticeWarrior", t: "how did he do it?"},
+        {n: "ScamPolice", t: "the classic 'give me ur pet and I'll duplicate it' script"},
+        {n: "JusticeWarrior", t: "if you fall for that in 2026 u deserve to get scammed ngl"},
+        {n: "ScamPolice", t: "my friend is 9 years old dude"},
+        {n: "JusticeWarrior", t: "oh... well then u should supervise them"},
+        {n: "ScamPolice", t: "just report him instead of arguing with me"}
+    ],
+    [
+        {n: "BloxburgArchitect", t: "who can build me an aesthetic blush pink mansion?"},
+        {n: "HomeDesigner", t: "I can! I charge 50k bloxburg cash"},
+        {n: "BloxburgArchitect", t: "that's too much, i only have 30k"},
+        {n: "HomeDesigner", t: "i can do a smaller house for 30k"},
+        {n: "BloxburgArchitect", t: "deal, my username is the same as here"},
+        {n: "HomeDesigner", t: "friend request sent, give me co-owner permissions when I join"}
+    ],
+    [
+        {n: "RichKid_01", t: "doing a robux drop at my house in meep city"},
+        {n: "MeepCityMayor", t: "meep city doesn't have robux drops?"},
+        {n: "RichKid_01", t: "yes it does I bought the new furniture item"},
+        {n: "MeepCityMayor", t: "bro that's just a visual effect it doesn't give real robux"},
+        {n: "RichKid_01", t: "wait what... I spent 800 robux on it"},
+        {n: "MeepCityMayor", t: "u got scammed by the game devs lmao"},
+        {n: "RichKid_01", t: "im crying"}
+    ],
+    [
+        {n: "BrookhavenStar", t: "anyone wanna rp? need a mom and a dad"},
+        {n: "RP_Queen", t: "I can be the mom! do we have a house?"},
+        {n: "BrookhavenStar", t: "yes I have premium, I claimed the big mansion on the hill"},
+        {n: "RP_Queen", t: "nice, i'll pull up in my G-wagon"},
+        {n: "BrookhavenStar", t: "we still need a dad though"},
+        {n: "SadPlayer", t: "I can be the dad but I don't have premium"},
+        {n: "BrookhavenStar", t: "that's fine, join us at lot 4!"}
+    ],
+    [
+        {n: "TraderJoe", t: "cross trading 1k robux for mm2 godlies"},
+        {n: "DarkViper12", t: "I have corrupt, what's ur offer"},
+        {n: "TraderJoe", t: "800 robux with tax"},
+        {n: "DarkViper12", t: "who goes first?"},
+        {n: "TraderJoe", t: "you, or we use a trusted mm"},
+        {n: "DarkViper12", t: "let's use an mm, idk you"},
+        {n: "TraderJoe", t: "fine, I'll find one from the discord"}
+    ],
+    [
+        {n: "PiggySurvivor", t: "adopt me is so boring now, it's just a trading simulator"},
+        {n: "AdoptMePro", t: "it always was a trading simulator"},
+        {n: "PiggySurvivor", t: "no, back in 2019 people actually roleplayed and took care of pets"},
+        {n: "AdoptMePro", t: "games change bro, economy is what keeps it alive"},
+        {n: "PiggySurvivor", t: "it just breeds toxicity and scammers now"},
+        {n: "AdoptMePro", t: "then don't play it? simple"}
+    ],
+                [
+        {n: "NoobSlayer", t: "someone please donate to me in pls donate"},
+        {n: "RichGuy", t: "what are u raising for?"},
+        {n: "NoobSlayer", t: "i want to buy the stitch face"},
+        {n: "RichGuy", t: "stitch face is 4,000 robux bro"},
+        {n: "NoobSlayer", t: "im at 120 right now, anything helps"},
+        {n: "RichGuy", t: "just use the site we are on to get it for free..."},
+        {n: "NoobSlayer", t: "i ran out of offers today"},
+        {n: "RichGuy", t: "wait until tomorrow then, im not donating for a stitch face 💀"}
+    ],
+    [
+        {n: "BaconHairLegend", t: "rate my avatar guys"},
+        {n: "StyleIcon", t: "it's just the default bacon hair"},
+        {n: "BaconHairLegend", t: "exactly, classic, 10/10 right?"},
+        {n: "StyleIcon", t: "honestly yeah, better than the copy and paste slender avatars"},
+        {n: "BaconHairLegend", t: "W take"},
+        {n: "xX_Shadow_Xx", t: "slenders look better than bacons any day"},
+        {n: "StyleIcon", t: "found the slender lol"}
+    ],
+    [
+        {n: "StarGazer", t: "is headless horseman coming back this year?"},
+        {n: "HalloweenFan", t: "it comes back every october, yes"},
+        {n: "StarGazer", t: "it's 31k right? I need to start saving"},
+        {n: "HalloweenFan", t: "yeah it's expensive, but people make fake headless with ugc now"},
+        {n: "StarGazer", t: "roblox keeps deleting the fake ones tho"},
+        {n: "HalloweenFan", t: "true, real headless is a bigger flex anyway"},
+        {n: "StarGazer", t: "im gonna do 1 survey a day until october, I should have enough"}
+    ],
+    [
+        {n: "UGC_Creator", t: "just dropped a new limited on my group! only 100 stock"},
+        {n: "FastClicker", t: "bro the bots instantly sniped them all"},
+        {n: "UGC_Creator", t: "really? they sold out in 2 seconds?"},
+        {n: "FastClicker", t: "yes... u need to add captcha to your drops"},
+        {n: "UGC_Creator", t: "I can't, it's a roblox feature I don't control"},
+        {n: "FastClicker", t: "now they are being resold for 5k robux. GG"},
+        {n: "UGC_Creator", t: "I'll try to do in-game drops next time to stop bots"}
+    ],
+    [
+        {n: "PleaseDonateMe", t: "Hazem is in my server!!"},
+        {n: "SkepticalUser", t: "cap, what's his user?"},
+        {n: "PleaseDonateMe", t: "Hazem_Real123"},
+        {n: "SkepticalUser", t: "bro the real hazem is just 'hazem', that's a fake"},
+        {n: "PleaseDonateMe", t: "no he said he's on an alt giving away 1M robux"},
+        {n: "SkepticalUser", t: "don't click any links he sends you"},
+        {n: "PleaseDonateMe", t: "he just told me to put my password in his game to verify"},
+        {n: "SkepticalUser", t: "DO NOT DO THAT IT IS A SCAM"},
+        {n: "PleaseDonateMe", t: "oh oops..."}
+    ],
+    [
+        {n: "Neon_Ninja", t: "how do people make those glowing avatars"},
+        {n: "TechBro90", t: "it's layered clothing mixed with neon materials"},
+        {n: "Neon_Ninja", t: "can you send me a link to the shirt?"},
+        {n: "TechBro90", t: "search 'neon cyberpunk aura' in the catalog"},
+        {n: "Neon_Ninja", t: "found it, it costs 150"},
+        {n: "TechBro90", t: "yeah ugc is getting expensive"},
+        {n: "Neon_Ninja", t: "just did a task, bought it, looks fire"}
+    ],
+    [
+        {n: "GamerGirl99", t: "doing commissions! drawing your roblox avatar for 500 robux"},
+        {n: "ArtLover", t: "do you have examples of your work?"},
+        {n: "GamerGirl99", t: "check my twitter linked in my bio"},
+        {n: "ArtLover", t: "oh wow ur style is actually really good"},
+        {n: "GamerGirl99", t: "ty! want a slot? I have 2 open"},
+        {n: "ArtLover", t: "yes, I'll buy the gamepass rn. draw my current avatar"},
+        {n: "GamerGirl99", t: "tysm! it will be done in 3 days"}
+    ],
+    [
+        {n: "Toxic_Viper", t: "why do people wear the superhero package"},
+        {n: "SweatyTryhard", t: "it makes your hitbox smaller"},
+        {n: "Toxic_Viper", t: "that's a myth bro hitboxes are identical for all packages"},
+        {n: "SweatyTryhard", t: "no it's not, ask any arsenal pro"},
+        {n: "Toxic_Viper", t: "I did, they said you guys just wear it to be edgy"},
+        {n: "SweatyTryhard", t: "cap, it gives an advantage in wall peeking"},
+        {n: "Toxic_Viper", t: "pure placebo effect"}
+    ],
+    [
+        {n: "LonelyPlayer", t: "anyone wanna match avatars?"},
+        {n: "HappyFace", t: "I will! what aesthetic?"},
+        {n: "LonelyPlayer", t: "y2k or grunge?"},
+        {n: "HappyFace", t: "let's do y2k! I have the perfect outfits saved in catalog avatar creator"},
+        {n: "LonelyPlayer", t: "join me in game and give me the code"},
+        {n: "HappyFace", t: "joining now!"}
+    ],
+    [
+        {n: "RobuxHunter", t: "anyone here rich?"},
+        {n: "BloxMaster", t: "I have 500k limiteds, why?"},
+        {n: "RobuxHunter", t: "can u buy my 5 robux shirt?"},
+        {n: "BloxMaster", t: "no"},
+        {n: "RobuxHunter", t: "pls bro 5 robux is nothing to you"},
+        {n: "BloxMaster", t: "that's why I'm rich, I don't give it away to randoms"},
+        {n: "RobuxHunter", t: "ur selfish fr"}
+    ],
+                [
+        {n: "HeadshotMachine", t: "arsenal is full of hackers today"},
+        {n: "ArsenalChamp", t: "what region are you playing in?"},
+        {n: "HeadshotMachine", t: "US East"},
+        {n: "ArsenalChamp", t: "yeah US servers are infested right now, play on EU"},
+        {n: "HeadshotMachine", t: "but my ping goes up to 150"},
+        {n: "ArsenalChamp", t: "better to have high ping than die to a guy flying under the map"},
+        {n: "HeadshotMachine", t: "true, switching to UK servers"},
+        {n: "ArsenalChamp", t: "let me know if it's better"}
+    ],
+    [
+        {n: "MurderMysteryKing", t: "bro the murderer is literally camping the gun"},
+        {n: "GhostRider_007", t: "I hate when they do that, it's so boring"},
+        {n: "MurderMysteryKing", t: "someone just bait him"},
+        {n: "GhostRider_007", t: "I tried and he threw the knife at me"},
+        {n: "MurderMysteryKing", t: "im lagging too much to juke him"},
+        {n: "GhostRider_007", t: "time is almost out anyway, we win if he doesn't kill everyone"},
+        {n: "MurderMysteryKing", t: "yeah 10 seconds left... we won lmao he's mad in chat"}
+    ],
+    [
+        {n: "BedwarsGod", t: "need a duo for ranked bedwars, must be diamond+"},
+        {n: "EpicBuilder", t: "im platinum 4, can I join?"},
+        {n: "BedwarsGod", t: "no offense but I need someone who can speedbridge flawlessly"},
+        {n: "EpicBuilder", t: "i can speedbridge! i just solo queue so my rank is low"},
+        {n: "BedwarsGod", t: "alright I'll test u in a 1v1 first"},
+        {n: "EpicBuilder", t: "bet, invite me"},
+        {n: "BedwarsGod", t: "if u fall into the void ur instantly kicked lol"}
+    ],
+    [
+        {n: "DaHoodMenace", t: "stomping in da hood rn, anyone wanna join my crew?"},
+        {n: "CasualNoob", t: "that game is way too toxic for me"},
+        {n: "DaHoodMenace", t: "that's the fun part, making people rage"},
+        {n: "CasualNoob", t: "nah I'd rather play something relaxing"},
+        {n: "DaHoodMenace", t: "we are raiding the bank, easy cash"},
+        {n: "CasualNoob", t: "until 5 guys with macros pull up on you"},
+        {n: "DaHoodMenace", t: "I have a macro too 😎"}
+    ],
+    [
+        {n: "PhantomForcesPro", t: "BFG 50 users are so annoying"},
+        {n: "SniperElite", t: "sounds like a skill issue"},
+        {n: "PhantomForcesPro", t: "it's a 1 tap to the toe across the map, it requires zero skill"},
+        {n: "SniperElite", t: "if it's so easy why don't you use it?"},
+        {n: "PhantomForcesPro", t: "because I actually have dignity and use an assault rifle"},
+        {n: "SniperElite", t: "enjoy getting sniped then lol"}
+    ],
+    [
+        {n: "EvadeMaster", t: "who can revive me? im down at the mall escalator"},
+        {n: "SpeedRunner", t: "im coming, hold on"},
+        {n: "EvadeMaster", t: "obunga is right next to me hurry"},
+        {n: "SpeedRunner", t: "I have the cola, I'll distract him"},
+        {n: "EvadeMaster", t: "he saw u!"},
+        {n: "SpeedRunner", t: "im juking him, crawling to u now"},
+        {n: "EvadeMaster", t: "W revive, let's get to the safe zone"}
+    ],
+    [
+        {n: "JailbreakLegend", t: "anyone got a keycard?"},
+        {n: "CopPlayer1", t: "come get one from me at the prison 😎"},
+        {n: "JailbreakLegend", t: "nah ur camping the exit"},
+        {n: "CopPlayer1", t: "just doing my job citizen"},
+        {n: "JailbreakLegend", t: "im bringing a helicopter and C4"},
+        {n: "CopPlayer1", t: "bring it on, I have a sniper"},
+        {n: "JailbreakLegend", t: "ur getting robbed today buddy"}
+    ],
+    [
+        {n: "SlapBattlesChamp", t: "how do I get the overkill glove without robux?"},
+        {n: "P2W_Player", t: "u can't, it's a gamepass"},
+        {n: "SlapBattlesChamp", t: "that's so p2w"},
+        {n: "P2W_Player", t: "just use the site we are on to get 999 robux and buy it"},
+        {n: "SlapBattlesChamp", t: "wait how much does overkill cost?"},
+        {n: "P2W_Player", t: "999 robux exactly"},
+        {n: "SlapBattlesChamp", t: "say less, doing surveys right now"}
+    ],
+    [
+        {n: "DoorsSpeedrunner", t: "Floor 2 of Doors is brutal"},
+        {n: "GhostRider_007", t: "the mineshaft part always gets me"},
+        {n: "DoorsSpeedrunner", t: "u have to listen closely for the new entities"},
+        {n: "GhostRider_007", t: "grumble is terrifying"},
+        {n: "DoorsSpeedrunner", t: "im stuck on door 150"},
+        {n: "GhostRider_007", t: "I can help u, I memorized the path"},
+        {n: "DoorsSpeedrunner", t: "bless, join my lobby"}
+    ],
+    [
+        {n: "TowerOfHellPro", t: "who bought invincibility? W person"},
+        {n: "RichKid_01", t: "that was me, yw"},
+        {n: "TowerOfHellPro", t: "now buy speed and low gravity"},
+        {n: "RichKid_01", t: "don't get greedy lol"},
+        {n: "ToxicKid", t: "buy it or ur broke"},
+        {n: "RichKid_01", t: "fine, buying fog and negative modifiers instead"},
+        {n: "TowerOfHellPro", t: "NOOOOO WHY"}
+    ],
+            [
+        {n: "SarahCute", t: "how was everyone's day?"},
+        {n: "HappyDog", t: "really good! I passed my math test"},
+        {n: "SarahCute", t: "omg congrats! math is so hard"},
+        {n: "SadCat", t: "my day was terrible"},
+        {n: "SarahCute", t: "aw why what happened?"},
+        {n: "SadCat", t: "I lost my 100 day streak on snapchat"},
+        {n: "HappyDog", t: "bruh is that it? I thought someone died"},
+        {n: "SadCat", t: "it's a big deal to me ok :("}
+    ],
+    [
+        {n: "MusicListener", t: "anyone listen to the new album that dropped today?"},
+        {n: "SongSinger", t: "yes! the 3rd track is amazing"},
+        {n: "MusicListener", t: "right?? I've had it on repeat while doing offers"},
+        {n: "BoredAdmin", t: "what album are we talking about?"},
+        {n: "MusicListener", t: "carti's new drop"},
+        {n: "BoredAdmin", t: "oh he finally dropped? it's a miracle"},
+        {n: "SongSinger", t: "literally 2026 and we finally got it"}
+    ],
+    [
+        {n: "SpanishSpeaker", t: "hola alguien habla español?"},
+        {n: "BilingualKid", t: "si un poco, como estas?"},
+        {n: "SpanishSpeaker", t: "muy bien! esta pagina funciona?"},
+        {n: "BilingualKid", t: "si bro, es legitimo. yo consegui 500 ayer"},
+        {n: "SpanishSpeaker", t: "gracias, voy a intentarlo ahora"},
+        {n: "BilingualKid", t: "de nada, suerte!"}
+    ],
+    [
+        {n: "NightHawk", t: "it's 4am here I should probably sleep"},
+        {n: "MorningLark", t: "bro go to bed your brain needs rest"},
+        {n: "NightHawk", t: "but the grind never stops"},
+        {n: "MorningLark", t: "the robux will still be here tomorrow"},
+        {n: "NightHawk", t: "yeah but I'm only 50 points away from my payout"},
+        {n: "MorningLark", t: "finish it and then instantly close ur eyes"},
+        {n: "NightHawk", t: "deal"}
+    ],
+    [
+        {n: "MovieWatcher", t: "did u guys see the new spiderman movie?"},
+        {n: "SpiderChild", t: "NO DON'T SPOIL IT I HAVEN'T SEEN IT"},
+        {n: "MovieWatcher", t: "I won't spoil it, but the ending is crazy"},
+        {n: "SpiderChild", t: "im going this saturday to watch it"},
+        {n: "MovieWatcher", t: "u are gonna love it, best one yet"},
+        {n: "SpiderChild", t: "hypeeeeee"}
+    ],
+    [
+        {n: "AnimeLover", t: "any one piece fans here?"},
+        {n: "ZoroFan", t: "yes sir! current arc is insane"},
+        {n: "AnimeLover", t: "did u read the latest chapter?"},
+        {n: "ZoroFan", t: "yeah I can't believe what happened to luffy"},
+        {n: "NoobSlayer", t: "yo no spoilers im still on episode 400"},
+        {n: "AnimeLover", t: "u have 800 more episodes to go buddy good luck"},
+        {n: "NoobSlayer", t: "it's taking my whole life"}
+    ],
+    [
+        {n: "LonelyWolf", t: "need friends to play horrifying housing with"},
+        {n: "PartyAnimal", t: "I love that game! it's so chaotic"},
+        {n: "LonelyWolf", t: "add me let's play right now"},
+        {n: "PartyAnimal", t: "added. do u have vc?"},
+        {n: "LonelyWolf", t: "yeah join the discord"},
+        {n: "PartyAnimal", t: "joining now"}
+    ],
+    [
+        {n: "PizzaLover", t: "does pineapple belong on pizza?"},
+        {n: "BurgerFan", t: "NO. absolute crime"},
+        {n: "TacoEater", t: "I actually like it, it's sweet and salty"},
+        {n: "BurgerFan", t: "u are insane"},
+        {n: "PizzaLover", t: "im with taco on this one, Hawaiian pizza is W"},
+        {n: "BurgerFan", t: "im calling the police on both of u"},
+        {n: "TacoEater", t: "😂😂"}
+    ],
+    [
+        {n: "ArtCreator", t: "im thinking of making a roblox game, what genre should it be?"},
+        {n: "EpicBuilder", t: "make a horror game, they get so many visits"},
+        {n: "ArtCreator", t: "im bad at making scary models though"},
+        {n: "EpicBuilder", t: "make a simulator then, just copy pet sim"},
+        {n: "ArtCreator", t: "that feels unoriginal, I want something unique"},
+        {n: "EpicBuilder", t: "unique games die fast on roblox sadly, algorithm hates them"},
+        {n: "ArtCreator", t: "sad reality"}
+    ],
+    [
+        {n: "Student_99", t: "im doing this during math class rn"},
+        {n: "SmartTester", t: "bro pay attention to the teacher"},
+        {n: "Student_99", t: "I already know algebra it's boring"},
+        {n: "SmartTester", t: "if u get caught ur phone is getting confiscated"},
+        {n: "Student_99", t: "im on my laptop in the back row im safe"},
+        {n: "SmartTester", t: "until they walk around lol"},
+        {n: "Student_99", t: "alt+tab is my best friend"}
+    ],
+                [
+        {n: "skibidi_toilet1", t: "what the sigma"},
+        {n: "gigachad4", t: "speak english please"},
+        {n: "skibidi_toilet1", t: "bro has zero rizz"},
+        {n: "gigachad4", t: "you are definitely 10 years old"},
+        {n: "skibidi_toilet1", t: "im looksmaxxing rn don't talk to me"},
+        {n: "gigachad4", t: "the brainrot has consumed this generation"},
+        {n: "based_god5", t: "let him cook gigachad"}
+    ],
+    [
+        {n: "cringe_normie6", t: "only in ohio fr 💀"},
+        {n: "alpha_wolf8", t: "bro is using 2023 memes in 2026"},
+        {n: "cringe_normie6", t: "Ohio never dies"},
+        {n: "alpha_wolf8", t: "it died a long time ago lil bro"},
+        {n: "cringe_normie6", t: "womp womp"},
+        {n: "alpha_wolf8", t: "ur actually a bot"}
+    ],
+    [
+        {n: "TTV_Gamer", t: "chat is this real?"},
+        {n: "Twitch_God", t: "bro u are not streaming stop talking to 'chat'"},
+        {n: "TTV_Gamer", t: "chat W or L response from him?"},
+        {n: "Twitch_God", t: "im cringing"},
+        {n: "TTV_Gamer", t: "chat clip that, he's mad"},
+        {n: "Twitch_God", t: "seek help immediately"}
+    ],
+    [
+        {n: "sigma_male3", t: "I don't play adopt me, I only play real games"},
+        {n: "soft_kitten", t: "adopt me is a real game?"},
+        {n: "sigma_male3", t: "it's a baby simulator"},
+        {n: "soft_kitten", t: "it has more players than ur favorite game"},
+        {n: "sigma_male3", t: "quantity doesn't equal quality"},
+        {n: "soft_kitten", t: "okay 'sigma male' whatever u say"},
+        {n: "sigma_male3", t: "don't mess with the alpha"}
+    ],
+    [
+        {n: "pepe_the_frog", t: "who remembers guest 666?"},
+        {n: "JohnDoe11", t: "that creepypasta used to scare me so bad"},
+        {n: "pepe_the_frog", t: "i used to genuinely believe john doe would hack me on march 18th"},
+        {n: "JohnDoe11", t: "same bro I didn't log in for a whole week"},
+        {n: "pepe_the_frog", t: "the good old days of roblox"},
+        {n: "JohnDoe11", t: "now it's just ugc limiteds and skibidi toilet games"}
+    ],
+    [
+        {n: "goofy_ahh_game", t: "bro really thought he ate that 💀"},
+        {n: "slayyyyy", t: "he left no crumbs wdym"},
+        {n: "goofy_ahh_game", t: "he literally fell off the map in tower of hell"},
+        {n: "slayyyyy", t: "he fell with style periodt"},
+        {n: "goofy_ahh_game", t: "ur just defending him cause you guys are teaming"},
+        {n: "slayyyyy", t: "cry about it bestie"}
+    ],
+    [
+        {n: "sus", t: "red is acting kinda sus"},
+        {n: "im_the_impostor", t: "wrong game bro among us died 5 years ago"},
+        {n: "sus", t: "among us is eternal"},
+        {n: "im_the_impostor", t: "I literally voted you out"},
+        {n: "sus", t: "I was in electrical doing tasks"},
+        {n: "im_the_impostor", t: "we are playing arsenal..."},
+        {n: "sus", t: "oh. still sus."}
+    ],
+    [
+        {n: "ratio", t: "L + ratio + ur bald"},
+        {n: "skill_issue", t: "L + counter ratio + touch grass"},
+        {n: "ratio", t: "didn't ask + don't care + ur mom"},
+        {n: "skill_issue", t: "stay mad bozo"},
+        {n: "NormalGuy123", t: "can u guys stop spamming"}
+    ],
+    [
+        {n: "big_chungus", t: "did anyone else get the brainrot bundle in the catalog?"},
+        {n: "dat_boi", t: "u mean the one with the gigachad face?"},
+        {n: "big_chungus", t: "yeah it was only 15 robux"},
+        {n: "dat_boi", t: "copped it instantly, best purchase ever"},
+        {n: "big_chungus", t: "im wearing it right now I look majestic"},
+        {n: "dat_boi", t: "W rizz"}
+    ],
+    [
+        {n: "sweaty_kid", t: "why am I lagging so much rn"},
+        {n: "ur_mom", t: "cuz ur playing on a potato"},
+        {n: "sweaty_kid", t: "im on a 4090 bro roblox servers just suck"},
+        {n: "ur_mom", t: "bro is playing roblox on a 4090 💀"},
+        {n: "sweaty_kid", t: "I play other games too!"},
+        {n: "ur_mom", t: "sure buddy"}
+    ],
+        [
+        {n: "qwerty123", t: "helppppp mmeee"},
+        {n: "asdfgh456", t: "what's wrong"},
+        {n: "qwerty123", t: "my kkeyboard is bruken"},
+        {n: "asdfgh456", t: "I can tell"},
+        {n: "qwerty123", t: "it kkeeps ddouble typping"},
+        {n: "asdfgh456", t: "unplug it and plug it back in"},
+        {n: "qwerty123", t: "ok wtttttfffff"},
+        {n: "asdfgh456", t: "bro just restart your PC lol"}
+    ],
+    [
+        {n: "RobloxGod99", t: "###### ##### ##"},
+        {n: "ChatReader", t: "why are u tagging"},
+        {n: "RobloxGod99", t: "I ####### hate ###### moderation"},
+        {n: "ChatReader", t: "this isn't roblox bro, there is no filter here"},
+        {n: "RobloxGod99", t: "wait really? I can say numbers? 1 2 3 4 5"},
+        {n: "ChatReader", t: "yes lol you are safe here"},
+        {n: "RobloxGod99", t: "finally freedom"}
+    ],
+    [
+        {n: "GamerBoy2026", t: "i fell out of the map in bloxburg"},
+        {n: "BloxburgArchitect", t: "just reset character"},
+        {n: "GamerBoy2026", t: "I can't, im in build mode and it's glitched"},
+        {n: "BloxburgArchitect", t: "leave the game and rejoin then"},
+        {n: "GamerBoy2026", t: "but I didn't save my house progress"},
+        {n: "BloxburgArchitect", t: "bloxburg autosaves every few minutes you should be fine"},
+        {n: "GamerBoy2026", t: "rejoined. u were right, I only lost a few walls. ty"}
+    ],
+    [
+        {n: "BoredAdmin", t: "chat is so dead rn"},
+        {n: "CrazyMod", t: "everyone is grinding offers"},
+        {n: "BoredAdmin", t: "I guess that's a good thing for the site"},
+        {n: "CrazyMod", t: "yeah but it makes our job boring"},
+        {n: "BoredAdmin", t: "wanna play tic tac toe in chat?"},
+        {n: "CrazyMod", t: "bet. top middle"},
+        {n: "BoredAdmin", t: "center"},
+        {n: "CrazyMod", t: "top left"}
+    ],
+    [
+        {n: "SpamBot_Pro", t: "FREE ROBUX AT WWW.FAKEWEBSITE.COM"},
+        {n: "mod123789", t: "nice try bot. banned."},
+        {n: "RealUser99", t: "did someone actually try to advertise a fake site on a real site?"},
+        {n: "mod123789", t: "yeah happens all the time"},
+        {n: "RealUser99", t: "the irony is hilarious"},
+        {n: "mod123789", t: "they just set up bots to spam everywhere, it's pathetic"}
+    ],
+    [
+        {n: "NoobSlayer", t: "I got error 502 bad gateway"},
+        {n: "TechSupport", t: "the site is under heavy load right now, thousands of users"},
+        {n: "NoobSlayer", t: "is it getting ddossed?"},
+        {n: "TechSupport", t: "no just a lot of traffic from a tiktok video that went viral"},
+        {n: "NoobSlayer", t: "oh wow, popular site. I'll refresh in 5 mins"},
+        {n: "TechSupport", t: "should be stable now, servers scaled up"}
+    ],
+    [
+        {n: "AngryNoob", t: "WHERE IS MY ROBUX I WANT A REFUND"},
+        {n: "CalmPro", t: "a refund? u didn't pay any money bro"},
+        {n: "AngryNoob", t: "I PAID WITH MY TIME"},
+        {n: "CalmPro", t: "time isn't a currency they can refund u lol"},
+        {n: "AngryNoob", t: "IM REPORTING THIS TO ROBLOX"},
+        {n: "CalmPro", t: "they will just ban u for using 3rd party sites... I wouldn't do that"},
+        {n: "AngryNoob", t: "oh wait really?"},
+        {n: "CalmPro", t: "yeah, just wait 5 days for the pending to clear, chill out"}
+    ],
+    [
+        {n: "laggy_kid", t: "im laggingggggg"},
+        {n: "smooth_fps", t: "close ur background apps"},
+        {n: "laggy_kid", t: "I only have 30 chrome tabs open"},
+        {n: "smooth_fps", t: "bro chrome eats RAM for breakfast, close them"},
+        {n: "laggy_kid", t: "but I need them for school"},
+        {n: "smooth_fps", t: "bookmark them then, ur PC is suffocating"},
+        {n: "laggy_kid", t: "closed them. omg 60 fps finally"}
+    ],
+    [
+        {n: "RandomDude", t: "whats 9 + 10"},
+        {n: "MemeLord", t: "21"},
+        {n: "MathGenius", t: "it's 19."},
+        {n: "MemeLord", t: "u stoopid"},
+        {n: "MathGenius", t: "im literally right it's basic addition"},
+        {n: "RandomDude", t: "he doesn't know the meme guys"},
+        {n: "MathGenius", t: "oh. my bad."}
+    ],
+    [
+        {n: "HappyFace", t: "I love you guys"},
+        {n: "SadSmile", t: "we don't even know you"},
+        {n: "HappyFace", t: "I'm just spreading positivity!"},
+        {n: "AngryFrown", t: "shut up"},
+        {n: "HappyFace", t: "I hope u have a great day too AngryFrown!"},
+        {n: "AngryFrown", t: "whatever... thanks."},
+        {n: "SadSmile", t: "character development"}
+    ],
+            [
+        {n: "guest345678", t: "does this require ID verification?"},
+        {n: "mod123789", t: "no, we never ask for ID or sensitive info"},
+        {n: "guest345678", t: "one of the offers asked for my zip code"},
+        {n: "mod123789", t: "that's normal for surveys to find local demographics"},
+        {n: "guest345678", t: "is it safe to put my real one?"},
+        {n: "mod123789", t: "yes, or you can just put a random valid one"},
+        {n: "guest345678", t: "ok just wanted to be sure, thanks"}
+    ],
+    [
+        {n: "Pro_Blox_99", t: "bruh the offer wall is blank for me"},
+        {n: "TechBro90", t: "are you using a VPN?"},
+        {n: "Pro_Blox_99", t: "yeah i have nordvpn on"},
+        {n: "TechBro90", t: "turn it off, offer walls block VPNs to stop fraud"},
+        {n: "Pro_Blox_99", t: "oh shoot let me turn it off"},
+        {n: "Pro_Blox_99", t: "they showed up! thanks bro"},
+        {n: "TechBro90", t: "no problem"}
+    ],
+    [
+        {n: "CryptoBro", t: "can we cash out in crypto instead of robux?"},
+        {n: "admin567890", t: "currently we only support roblox gamepass payouts"},
+        {n: "CryptoBro", t: "dang I wanted bitcoin"},
+        {n: "admin567890", t: "there are other sites for that, this is specifically for roblox"},
+        {n: "CryptoBro", t: "fair enough, robux is good too i can just dev-ex it later"},
+        {n: "admin567890", t: "you can't dev-ex robux from gamepasses unless it's your own original game sales"},
+        {n: "CryptoBro", t: "oh right... well I'll just buy dominus then"}
+    ],
+    [
+        {n: "HappyGamer", t: "I LOVE THIS SITE I JUST GOT 10K"},
+        {n: "SadPlayer", t: "how? I only got 50"},
+        {n: "HappyGamer", t: "I did the sirius xm offer and the raid shadow legends one"},
+        {n: "SadPlayer", t: "those take a credit card though right?"},
+        {n: "HappyGamer", t: "yeah I used a prepaid visa giftcard with $5 on it"},
+        {n: "SadPlayer", t: "200 IQ move right there, I need to buy a prepaid card"},
+        {n: "HappyGamer", t: "it works perfectly, easiest 10k of my life"}
+    ],
+    [
+        {n: "ConfusedDev", t: "what happens if I change my roblox username while waiting for pending robux?"},
+        {n: "SmartTester", t: "it still goes through, pending is tied to your account ID not the name"},
+        {n: "ConfusedDev", t: "oh thank god, I just changed my name and got scared"},
+        {n: "SmartTester", t: "yeah ur good, roblox tracks the user ID natively"},
+        {n: "ConfusedDev", t: "phew. thanks man"}
+    ],
+    [
+        {n: "impatient_kid", t: "WHY IS IT PENDING FOR SO LONG"},
+        {n: "CalmPro", t: "roblox takes 5-7 days for gamepasses. we don't control it"},
+        {n: "impatient_kid", t: "I WANT IT NOW"},
+        {n: "CalmPro", t: "yelling in chat won't make roblox faster"},
+        {n: "impatient_kid", t: "this is a scam I bet it never arrives"},
+        {n: "CalmPro", t: "I've withdrawn 5 times this month, it always arrives. just wait"},
+        {n: "impatient_kid", t: "fine."}
+    ],
+    [
+        {n: "ReferralKing", t: "everyone use my referral code 'KING99'"},
+        {n: "mod123789", t: "stop spamming your referral code in the main chat"},
+        {n: "ReferralKing", t: "but I want the 5% bonus"},
+        {n: "mod123789", t: "send it to your friends on discord, not here"},
+        {n: "ReferralKing", t: "no one here is my friend though"},
+        {n: "mod123789", t: "I wonder why... last warning before mute"}
+    ],
+    [
+        {n: "NewUser101", t: "how do I make a gamepass to get paid?"},
+        {n: "HelpfulPro", t: "go to roblox creator dashboard, click ur starter place, go to associated items"},
+        {n: "NewUser101", t: "then what?"},
+        {n: "HelpfulPro", t: "click passes, upload any random image, and set the price the site tells u to"},
+        {n: "NewUser101", t: "wait it says I get 70%?"},
+        {n: "HelpfulPro", t: "yeah the site covers the 30% roblox tax automatically"},
+        {n: "NewUser101", t: "oh wow that's so nice of them. done!"}
+    ],
+    [
+        {n: "ErrorFinder", t: "it says 'inventory private' when I try to withdraw"},
+        {n: "BugFixer", t: "u have to go to roblox privacy settings and make your inventory public"},
+        {n: "ErrorFinder", t: "but I don't want people seeing my limiteds"},
+        {n: "BugFixer", t: "just make it public for 2 minutes while u withdraw, then change it back"},
+        {n: "ErrorFinder", t: "oh true, smart. let me try"},
+        {n: "ErrorFinder", t: "it went through! withdrawing 500 now"},
+        {n: "BugFixer", t: "W"}
+    ],
+    [
+        {n: "DailyGrinder", t: "is there a daily limit to how much we can earn?"},
+        {n: "admin567890", t: "nope! you can earn as much as you want"},
+        {n: "DailyGrinder", t: "bet, im staying up all night doing app offers"},
+        {n: "admin567890", t: "just remember some offerwalls have a max per day, but you can switch walls"},
+        {n: "DailyGrinder", t: "I'll do AdGem first then RevU"},
+        {n: "admin567890", t: "perfect strategy. happy earning!"}
+    ],
+             [
+        {n: "DeepWokenExplorer", t: "I wiped my slot to a lag spike"},
+        {n: "ProGamer", t: "that's the deepwoken experience for u"},
+        {n: "DeepWokenExplorer", t: "I was power 20 with a dawnwalker build"},
+        {n: "ProGamer", t: "pain. did you clip it? mods might restore"},
+        {n: "DeepWokenExplorer", t: "no my medal clip wasn't running"},
+        {n: "ProGamer", t: "ur cooked then, time to restart"},
+        {n: "DeepWokenExplorer", t: "im uninstalling roblox"}
+    ],
+    [
+        {n: "GachaWhale", t: "just spent 10k robux on anime defenders"},
+        {n: "F2P_Player", t: "why would u spend that on a tower defense game?"},
+        {n: "GachaWhale", t: "to get the secret rarity unit"},
+        {n: "F2P_Player", t: "did u get it?"},
+        {n: "GachaWhale", t: "no I got shafted on the pity"},
+        {n: "F2P_Player", t: "gambling in roblox is crazy work"},
+        {n: "GachaWhale", t: "im doing more offers to buy more spins rn"}
+    ],
+    [
+        {n: "RoGhoul_Pro", t: "is ro-ghoul still active?"},
+        {n: "TokyoFan", t: "yeah but it's mostly max levels auto-clicking"},
+        {n: "RoGhoul_Pro", t: "sad, the pvp used to be so fun in 2020"},
+        {n: "TokyoFan", t: "game balancing ruined it, the new kagunes are too OP"},
+        {n: "RoGhoul_Pro", t: "I might just log on to see my old stats"},
+        {n: "TokyoFan", t: "u will probably get one shotted the second you spawn"},
+        {n: "RoGhoul_Pro", t: "typical ro-ghoul lol"}
+    ],
+    [
+        {n: "FrontPageHater", t: "why is the front page just brainrot games now?"},
+        {n: "OldRobloxVet", t: "the audience is getting younger"},
+        {n: "FrontPageHater", t: "I miss when natural disaster survival was #1"},
+        {n: "OldRobloxVet", t: "it still has 20k players, it's just hidden now"},
+        {n: "FrontPageHater", t: "I can't stand seeing 'escape the skibidi obby' with 100k players"},
+        {n: "OldRobloxVet", t: "kids click on bright thumbnails, developers adapt to make money"},
+        {n: "FrontPageHater", t: "we grew up, that's the sad truth"}
+    ],
+    [
+        {n: "LimitedTrader", t: "w/f/l I traded my valk for a playful vampire and super super happy face"},
+        {n: "RolimonsChecker", t: "that's a W in value, L in demand"},
+        {n: "LimitedTrader", t: "sshf has good demand though?"},
+        {n: "RolimonsChecker", t: "valk is a classic, it always rises"},
+        {n: "LimitedTrader", t: "true, but I wanted the faces for my avatar"},
+        {n: "RolimonsChecker", t: "then it's a W for u, fashion over rap"},
+        {n: "LimitedTrader", t: "exactly, thanks for checking"}
+    ],
+    [
+        {n: "RageQuitter", t: "I literally can't beat this obby"},
+        {n: "ObbyMaster", t: "which stage?"},
+        {n: "RageQuitter", t: "stage 75, the wraparound jump"},
+        {n: "ObbyMaster", t: "u have to use shift lock for that"},
+        {n: "RageQuitter", t: "im on mobile I don't have shift lock"},
+        {n: "ObbyMaster", t: "turn your camera sideways and flick your thumb"},
+        {n: "RageQuitter", t: "did it. fell. I quit."},
+        {n: "ObbyMaster", t: "lol it takes practice"}
+    ],
+    [
+        {n: "ScripterGuy", t: "anyone here know lua?"},
+        {n: "DevStudio", t: "yeah I script, what's up?"},
+        {n: "ScripterGuy", t: "my datastore script keeps wiping player data"},
+        {n: "DevStudio", t: "are you using UpdateAsync or SetAsync?"},
+        {n: "ScripterGuy", t: "SetAsync"},
+        {n: "DevStudio", t: "that's ur problem, use UpdateAsync to prevent data loss during race conditions"},
+        {n: "ScripterGuy", t: "ohhh that makes sense, let me rewrite it"}
+    ],
+    [
+        {n: "VoiceChatUser", t: "why did I get banned from VC?"},
+        {n: "ModHelp", t: "roblox moderation probably caught you swearing"},
+        {n: "VoiceChatUser", t: "I sneezed too loud bro"},
+        {n: "ModHelp", t: "the AI moderation is known to be overly sensitive"},
+        {n: "VoiceChatUser", t: "how long is the ban?"},
+        {n: "ModHelp", t: "first offense is usually 24 hours"},
+        {n: "VoiceChatUser", t: "guess I'll just use discord"}
+    ],
+    [
+        {n: "GroupOwner", t: "join my clothing group for 5 robux payout"},
+        {n: "SmartUser", t: "that's against TOS u can't pay people to join groups"},
+        {n: "GroupOwner", t: "everyone does it though"},
+        {n: "SmartUser", t: "until u get reported and ur group gets locked"},
+        {n: "GroupOwner", t: "u gonna report me?"},
+        {n: "SmartUser", t: "no I don't care, just warning u"},
+        {n: "GroupOwner", t: "ok thanks I guess"}
+    ],
+    [
+        {n: "LastMessageGuy", t: "im finally done, hit my 50k goal"},
+        {n: "Everyone", t: "W"},
+        {n: "LastMessageGuy", t: "took me 3 weeks of grinding surveys every day"},
+        {n: "Everyone", t: "respect the grind"},
+        {n: "LastMessageGuy", t: "buying korblox, headless, and a dominus right now"},
+        {n: "Everyone", t: "post fit check later"},
+        {n: "LastMessageGuy", t: "will do, peace out chat"}
+    ],
+    [
+        {n: "PixelPirate", t: "bro why does my avatar look blurry in-game"},
+        {n: "GraphicsNerd", t: "your graphics slider is probably on 1"},
+        {n: "PixelPirate", t: "im on automatic"},
+        {n: "GraphicsNerd", t: "turn it to manual and crank it up"},
+        {n: "PixelPirate", t: "ok my PC sounds like a jet engine now"},
+        {n: "GraphicsNerd", t: "but does the avatar look crisp?"},
+        {n: "PixelPirate", t: "yes, worth the fire hazard"}
+    ],
+    [
+        {n: "SpaceAlien", t: "has anyone tried the new alien invasion event?"},
+        {n: "GalaxyExplorer", t: "yeah it's kinda mid"},
+        {n: "SpaceAlien", t: "really? the trailer looked so cool"},
+        {n: "GalaxyExplorer", t: "the boss fight is just a bullet sponge, gets boring after 5 mins"},
+        {n: "SpaceAlien", t: "does it give a free UGC at least?"},
+        {n: "GalaxyExplorer", t: "yeah a green top hat"},
+        {n: "SpaceAlien", t: "ok im doing it just for the hat"}
+    ],
+    [
+        {n: "TimeTraveler", t: "I wish I could go back to 2018 roblox"},
+        {n: "RetroRobot", t: "egg hunts, old jailbreak, real events"},
+        {n: "TimeTraveler", t: "the hunt this year was just a developer glorified sponsor event"},
+        {n: "RetroRobot", t: "they make millions off sponsorships now, they don't care about lore"},
+        {n: "TimeTraveler", t: "it's sad. at least we have the memories"},
+        {n: "RetroRobot", t: "and old youtube videos"}
+    ],
+    [
+        {n: "FireElementalist", t: "how to get fire breathing style in demonfall?"},
+        {n: "WaterShaman", t: "you have to find rengoku on the top of the mountain"},
+        {n: "FireElementalist", t: "I went there but he's not spawning"},
+        {n: "WaterShaman", t: "it's a day cycle thing, wait till morning in-game"},
+        {n: "FireElementalist", t: "ah ok. is fire good for pvp?"},
+        {n: "WaterShaman", t: "it's decent, lots of burn damage but long cooldowns"},
+        {n: "FireElementalist", t: "better than water at least"}
+    ],
+    [
+        {n: "HappyDog", t: "WHO WANTS A FREE HUG"},
+        {n: "AngryBear", t: "stay away from me"},
+        {n: "HappyDog", t: "aww don't be grumpy *hugs*"},
+        {n: "AngryBear", t: "im blocking u"},
+        {n: "HappyDog", t: "love wins!!"},
+        {n: "SadCat", t: "can I get a hug?"},
+        {n: "HappyDog", t: "YES! *hugs*"}
+    ],
+    [
+        {n: "SneakySnake", t: "im doing a troll run in epic minigames"},
+        {n: "BraveEagle", t: "what does that mean"},
+        {n: "SneakySnake", t: "im pushing people off in the laser tag map"},
+        {n: "BraveEagle", t: "ur the reason I have trust issues in that game"},
+        {n: "SneakySnake", t: "hehe just pushed someone into the void"},
+        {n: "BraveEagle", t: "karma is gonna get u"},
+        {n: "SneakySnake", t: "I just fell. rip."}
+    ],
+    [
+        {n: "SpeedHacker", t: "I can run across the map in 1 second"},
+        {n: "FairPlayer", t: "enjoy the ban"},
+        {n: "SpeedHacker", t: "roblox anti-cheat byfron is a joke I bypass it easily"},
+        {n: "FairPlayer", t: "ruining the game for others isn't a flex"},
+        {n: "SpeedHacker", t: "u mad cuz u slow"},
+        {n: "FairPlayer", t: "no im mad because u lack brain cells"},
+        {n: "AdminHelper", t: "SpeedHacker has been logged and reported."}
+    ],
+    [
+        {n: "BaconHairLegend", t: "bacon hairs are unironically the strongest players"},
+        {n: "SweatyTryhard", t: "they are all just alts for exploiters"},
+        {n: "BaconHairLegend", t: "some of us are legit bro"},
+        {n: "SweatyTryhard", t: "name one good bacon hair player"},
+        {n: "BaconHairLegend", t: "literally me. I 1v1d a ro-ghoul max level and won"},
+        {n: "SweatyTryhard", t: "ro-ghoul takes no skill now"},
+        {n: "BaconHairLegend", t: "excuses"}
+    ],
+    [
+        {n: "AdoptMeTrader", t: "TRADING 4 RIDE POTIONS FOR ANY GOOD PET"},
+        {n: "ScamPolice", t: "i'll give u a golden unicorn for 2"},
+        {n: "AdoptMeTrader", t: "golden pets lost value ages ago"},
+        {n: "ScamPolice", t: "fine, a frost fury for all 4?"},
+        {n: "AdoptMeTrader", t: "deal, add me"},
+        {n: "ScamPolice", t: "joining ur server now"}
+    ],
+    [
+        {n: "TycoonBoss", t: "why are tycoons all just stepping on buttons"},
+        {n: "SimulatorGod", t: "that's what a roblox tycoon is bro"},
+        {n: "TycoonBoss", t: "old tycoons u actually placed the droppers"},
+        {n: "SimulatorGod", t: "yeah lumber tycoon 2 was peak"},
+        {n: "TycoonBoss", t: "now it's just 'anime super hero tycoon 2026'"},
+        {n: "SimulatorGod", t: "and it has 50k players somehow"},
+        {n: "TycoonBoss", t: "kids love flashing lights and numbers going up"}
+    ],
+    [
+        {n: "xX_Specter_Xx", t: "how to get the true ending in piggy?"},
+        {n: "PiggySurvivor", t: "you need the all badges from book 1 and 2"},
+        {n: "xX_Specter_Xx", t: "I have them all, what map do I play?"},
+        {n: "PiggySurvivor", t: "play plant map on bot mode, escape, then play lab on swarm mode"},
+        {n: "xX_Specter_Xx", t: "swarm mode is so hard though"},
+        {n: "PiggySurvivor", t: "i'll help u, u just focus on the code I'll shoot the bots"},
+        {n: "xX_Specter_Xx", t: "ur a legend"}
+    ],
+    [
+        {n: "SilverKnight", t: "who plays deepwoken here?"},
+        {n: "GoldKing", t: "I do, max level blindseer build"},
+        {n: "SilverKnight", t: "can u help me beat the enforcer?"},
+        {n: "GoldKing", t: "just parry trade him, he's easy"},
+        {n: "SilverKnight", t: "my ping is 150 I can't parry consistently"},
+        {n: "GoldKing", t: "u have to predict it then, or just block and roll"},
+        {n: "SilverKnight", t: "I'll try, wish me luck down here"}
+    ],
+    [
+        {n: "MidnightOwl", t: "it is 3 AM and I am still doing surveys"},
+        {n: "EarlyBird", t: "it is 8 AM for me and I just started"},
+        {n: "MidnightOwl", t: "time zones are wild"},
+        {n: "EarlyBird", t: "how much u make tonight?"},
+        {n: "MidnightOwl", t: "about 800, mostly from the quiz offers"},
+        {n: "EarlyBird", t: "nice, get some sleep bro"}
+    ],
+    [
+        {n: "Robloxian445", t: "how do I get premium for free?"},
+        {n: "TechBro90", t: "u can't get the subscription for free directly"},
+        {n: "Robloxian445", t: "but the generator?"},
+        {n: "TechBro90", t: "the generator gives u robux, you can't buy premium with robux"},
+        {n: "Robloxian445", t: "oh... I need a credit card?"},
+        {n: "TechBro90", t: "yeah, just use the robux to buy the avatar items u want instead"}
+    ],
+    [
+        {n: "DuskWolf", t: "does anyone have the discord link for the trade hub?"},
+        {n: "DawnRooster", t: "check the group shout on roblox"},
+        {n: "DuskWolf", t: "it says the invite is expired"},
+        {n: "DawnRooster", t: "oh they probably paused invites because of bot raids"},
+        {n: "DuskWolf", t: "I just wanna trade my limiteds man"},
+        {n: "DawnRooster", t: "use rolimons trade ads instead"}
+    ],
+    [
+        {n: "GamerBoy2026", t: "im going to buy a private server for blox fruits"},
+        {n: "FreeLoader", t: "yo can I get the link?"},
+        {n: "GamerBoy2026", t: "why should I give it to u"},
+        {n: "FreeLoader", t: "cuz we are friends?"},
+        {n: "GamerBoy2026", t: "we literally just met in this chat 5 mins ago"},
+        {n: "FreeLoader", t: "friendship works fast on the internet"},
+        {n: "GamerBoy2026", t: "lmao fine, check ur dm"}
+    ],
+    [
+        {n: "SuperDude", t: "my roblox just crashed"},
+        {n: "MegaGuy", t: "roblox is down I think"},
+        {n: "SuperDude", t: "check downdetector"},
+        {n: "MegaGuy", t: "yeah huge spike in reports"},
+        {n: "SuperDude", t: "every weekend bro I swear"},
+        {n: "MegaGuy", t: "some new pet sim update probably broke the servers again"}
+    ],
+    [
+        {n: "LoneWolf", t: "I prefer playing single player roblox games"},
+        {n: "PackLeader", t: "like what?"},
+        {n: "LoneWolf", t: "entry point, single player obbies, story games"},
+        {n: "PackLeader", t: "story games are way better with friends though"},
+        {n: "LoneWolf", t: "friends just troll and ruin the puzzles"},
+        {n: "PackLeader", t: "that's fair, carrying noobs is annoying"}
+    ],
+    [
+        {n: "Golden_Eagle", t: "just hit 100k group funds"},
+        {n: "Silver_Fox", t: "ur rich rich"},
+        {n: "Golden_Eagle", t: "im paying out my devs today"},
+        {n: "Silver_Fox", t: "need a new dev? I can build"},
+        {n: "Golden_Eagle", t: "show me ur portfolio"},
+        {n: "Silver_Fox", t: "it's on the devforum, user is SilverFoxBuilds"},
+        {n: "Golden_Eagle", t: "wow ur terrain work is insane. I'll dm u"}
+    ],
+    [
+        {n: "AngryNoob", t: "stop spawn killing me"},
+        {n: "Pro_Blox_99", t: "ur literally walking out into the open"},
+        {n: "AngryNoob", t: "ur camping the door"},
+        {n: "Pro_Blox_99", t: "there's two other doors u can use"},
+        {n: "AngryNoob", t: "im reporting u for exploiting"},
+        {n: "Pro_Blox_99", t: "it's called aim bro, not exploits"}
+    ],
+    [
+        {n: "PizzaLover", t: "who wants to work at my pizza place"},
+        {n: "BurgerFan", t: "im the best cook in the game"},
+        {n: "PizzaLover", t: "I need a delivery driver"},
+        {n: "BurgerFan", t: "I always drive the cars into the ocean"},
+        {n: "PizzaLover", t: "nevermind u are fired before u even started"},
+        {n: "BurgerFan", t: "lol u can't fire the manager, I just promoted myself"}
+    ],
+    [
+        {n: "CloudyMorning", t: "im stuck on the human verification step"},
+        {n: "SunnyDay", t: "what does it ask you to do?"},
+        {n: "CloudyMorning", t: "download two apps and run them"},
+        {n: "SunnyDay", t: "did u actually open them for 30 seconds?"},
+        {n: "CloudyMorning", t: "I only opened one, the other crashed"},
+        {n: "SunnyDay", t: "u have to do both for it to unlock"},
+        {n: "CloudyMorning", t: "re-downloading it now"}
+    ],
+    [
+        {n: "NeonDragonLover", t: "does anyone have a neon fly ride shadow?"},
+        {n: "PetSimRich", t: "wrong game bro"},
+        {n: "NeonDragonLover", t: "oh wait this is pet sim 99 chat"},
+        {n: "PetSimRich", t: "yeah we deal with huges and titanics here"},
+        {n: "NeonDragonLover", t: "my bad, pet sim economy is too confusing for me"},
+        {n: "PetSimRich", t: "it's just inflation simulator lol"}
+    ],
+    [
+        {n: "xX_Sniper_xX1", t: "just hit a cross map trickshot in arsenal"},
+        {n: "CasualNoob", t: "did u record it?"},
+        {n: "xX_Sniper_xX1", t: "yes I use shadowplay, it was so clean"},
+        {n: "CasualNoob", t: "post it on tiktok"},
+        {n: "xX_Sniper_xX1", t: "I will, trying to get into a clan"},
+        {n: "CasualNoob", t: "gl bro"}
+    ],
+    [
+        {n: "Troll_Face_Guy", t: "how to get free bobux?"},
+        {n: "SeriousUser", t: "ur literally on the site right now just read the instructions"},
+        {n: "Troll_Face_Guy", t: "instruction unclear, I bought a toaster"},
+        {n: "SeriousUser", t: "so funny bro haha..."},
+        {n: "Troll_Face_Guy", t: "is the toaster compatible with roblox?"},
+        {n: "SeriousUser", t: "ignoring you now"}
+    ],
+    [
+        {n: "BloxMaster", t: "Anyone know how to make a shirt transparent?"},
+        {n: "EpicBuilder", t: "use paint.net and delete the background so it's a PNG"},
+        {n: "BloxMaster", t: "Oh I was using ms paint and it gave me a white box"},
+        {n: "EpicBuilder", t: "yeah ms paint doesn't support transparency"},
+        {n: "BloxMaster", t: "thanks downloading paint.net now"},
+        {n: "EpicBuilder", t: "np make sure the template size is correct too"}
+    ],
+    [
+        {n: "GhostRider_007", t: "I keep dying to the figure in doors door 50"},
+        {n: "Pro_Blox_99", t: "just crouch walk the entire time"},
+        {n: "GhostRider_007", t: "I do but he somehow hears me?"},
+        {n: "Pro_Blox_99", t: "did you step on the glass?"},
+        {n: "GhostRider_007", t: "wait there's glass on the floor??"},
+        {n: "Pro_Blox_99", t: "yes... look at the floor bro"},
+        {n: "GhostRider_007", t: "im so blind lol"}
+    ],
+    [
+        {n: "Crystal_Wolf", t: "Rate my outfit out of 10"},
+        {n: "Diamond_Cat", t: "Solid 8, I like the color coordination"},
+        {n: "Silver_Fox", t: "I'd say a 6, the hat clips through the hair"},
+        {n: "Crystal_Wolf", t: "ugh I know, I can't find a hat that fits this hair"},
+        {n: "Diamond_Cat", t: "try using the advanced editor to adjust the scale"},
+        {n: "Crystal_Wolf", t: "Wait u can do that now?"},
+        {n: "Diamond_Cat", t: "yeah roblox updated ugc adjustments last month"}
+    ],
+    [
+        {n: "ToxicKid", t: "everyone in this server is trash at pvp"},
+        {n: "CalmPro", t: "we are playing meep city bro"},
+        {n: "ToxicKid", t: "im still better than u"},
+        {n: "CalmPro", t: "at fishing? ok sure"},
+        {n: "ToxicKid", t: "1v1 me in the race track"},
+        {n: "CalmPro", t: "no thanks im decorating my igloo"}
+    ],
+        [
+            {n: "BuilderManFan", t: "Does anyone still play work at a pizza place?"},
+            {n: "NostalgiaGamer", t: "yes it's literally a timeless classic"},
+            {n: "BuilderManFan", t: "I love burning the pizzas on purpose"},
+            {n: "NostalgiaGamer", t: "so you're the guy ruining my shifts"},
+            {n: "BuilderManFan", t: "manager can't stop me"},
+            {n: "NostalgiaGamer", t: "im sending u to the shadow realm (the time out room)"}
+        ]
+    ];
+
+
+let activeSequence = [];
+    let chatBox = document.getElementById('chat-box');
+    
+    if(chatBox) {
+        // Populate initial fake chat history
+        for(let i=0; i<10; i++) {
+            let n = names[Math.floor(Math.random() * names.length)];
+            let t = genericTexts[Math.floor(Math.random() * genericTexts.length)];
+            addChatMessage(n, t, chatBox);
+        }
+
+        // --- TIMER 1: THE FAST CLAIM SPAM (Every 1 to 2 seconds) ---
+        function triggerClaims() {
+            let claimTextsArray = ["just claimed 4,500 Robux!", "just claimed Premium!"];
+            let n = names[Math.floor(Math.random() * names.length)];
+            let t = claimTextsArray[Math.floor(Math.random() * claimTextsArray.length)];
+            addChatMessage(n, t, chatBox);
+
+            // Update the active user count (Always above 50)
+            let currentCount = parseInt($('#active-count').text());
+            if (isNaN(currentCount) || currentCount < 50) currentCount = 55;
+            let newCount = currentCount + (Math.floor(Math.random() * 7) - 3); 
+            if(newCount < 52) newCount = 52 + Math.floor(Math.random() * 5); 
+            if(newCount > 95) newCount = 95 - Math.floor(Math.random() * 5); 
+            $('#active-count').text(newCount);
+
+            setTimeout(triggerClaims, Math.floor(Math.random() * 1000) + 1000);
+        }
+
+        // --- TIMER 2: THE ACTUAL CHAT (Conversations & Generic Texts) ---
+        function triggerChat() {
+            if (activeSequence.length > 0) {
+                let msg = activeSequence.shift();
+                addChatMessage(msg.n, msg.t, chatBox);
+            } else {
+                if (Math.random() < 0.25) {
+                    let seq = sequences[Math.floor(Math.random() * sequences.length)];
+                    activeSequence = [...seq]; 
+                    let msg = activeSequence.shift();
+                    addChatMessage(msg.n, msg.t, chatBox);
+                } else {
+                    let n = names[Math.floor(Math.random() * names.length)];
+                    let t = genericTexts[Math.floor(Math.random() * genericTexts.length)];
+                    addChatMessage(n, t, chatBox);
+                }
+            }
+            setTimeout(triggerChat, Math.floor(Math.random() * 1500) + 2000);
+        }
+
+        // Start both timers
+        setTimeout(triggerClaims, 1000);
+        setTimeout(triggerChat, 1500);
+    }
+} // <--- CRITICAL: This brace closes the startLiveChat() function!
+
+function addChatMessage(n, t, box) {
+    if(!box) return; 
+    let isClaimMsg = (t === "just claimed 4,500 Robux!" || t === "just claimed Premium!");
+    let color = isClaimMsg ? "#dc2626" : "#16a34a"; 
+
+    let msgHtml = `<div class="chat-msg"><span class="chat-user" style="color:${color}">${n}</span> <span style="color:${color}">${t}</span></div>`;
+    $(box).append(msgHtml);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
+</body>
+</html>
+
